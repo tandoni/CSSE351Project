@@ -14,25 +14,28 @@ public:
 	void init()
 	{
 		objLoader loader;
-		loader.load("resources/cube.obj");
+//		loader.load("resources/cube.obj");
 		//loader.load("resources/sphere.obj");
 		//loader.load("resources/teapot.obj");
-//		loader.load("resources/Canon(C).obj");
+		loader.load("resources/cannon.obj");
 		
 		for(size_t i=0; i<loader.vertexCount; i++) {
 			positions.push_back(loader.vertexList[i]->e[0]);
 			positions.push_back(loader.vertexList[i]->e[1]);
 			positions.push_back(loader.vertexList[i]->e[2]);
+            
 			//printf("v%zu: %f %f %f\n", i, positions[i*3+0], positions[i*3+1], positions[i*3+2]);
 		}
 		
 		for(size_t i=0; i<loader.faceCount; i++) {
 			if(loader.faceList[i]->vertex_count != 3) {
+//                printf("failing face: %d %d %d %d\n", loader.faceList[i]->vertex_index[0], loader.faceList[i]->vertex_index[1], loader.faceList[i]->vertex_index[2], loader.faceList[i]->vertex_index[3]);
 				fprintf(stderr, "Skipping non-triangle face %zu.\n", i);
-				continue;
+//                printf("size of failing face is: %d\n", loader.faceList[i]->vertex_count);
+//				continue;
 				//exit(1);
 			}
-			
+            printf("tEMP VALUE IS: %d\n",	loader.faceList[i]->vertex_index[0]);
 			elements.push_back(loader.faceList[i]->vertex_index[0]);
 			elements.push_back(loader.faceList[i]->vertex_index[1]);
 			elements.push_back(loader.faceList[i]->vertex_index[2]);
@@ -40,10 +43,15 @@ public:
 		}
 		
 		
-		vector<glm::vec3> vertexNormals;
-		vertexNormals.resize(positions.size());
-		for(size_t i=0; i<vertexNormals.size(); i++)
-			vertexNormals[i] = glm::vec3(0.0f);
+//		vector<glm::vec3> vertexNormals;
+//		vertexNormals.resize(positions.size());
+//		for(size_t i=0; i<vertexNormals.size(); i++)
+//			vertexNormals[0] = glm::vec3(0.0f);
+        
+        vector<glm::vec3> vertexNormals;
+        vertexNormals.resize(positions.size());
+        for(size_t i=0; i<vertexNormals.size(); i++)
+            vertexNormals[0] = glm::vec3(0.0f);
 		
 		
 		//TODO compute the vertex normals by averaging the face normals
@@ -75,15 +83,16 @@ public:
 			}
 		}
 		
-		for(size_t i=0; i<positions.size(); i++) {
-			vertexNormals[i] = glm::normalize(vertexNormals[i]);
-			//printf("%.2f %.2f %.2f\n", vertexNormals[i][0], vertexNormals[i][1], vertexNormals[i][2]);
-		}
+//		for(size_t i=0; i<positions.size(); i++) {
+//			normals.push_back(loader.normalList[i]);
+//			//printf("%.2f %.2f %.2f\n", vertexNormals[i][0], vertexNormals[i][1], vertexNormals[i][2]);
+//		}
 		
-		for(size_t i=0; i<positions.size(); i++) {
-			colors.push_back( (vertexNormals[i][0] + 1.0f) * 0.5f);
-			colors.push_back( (vertexNormals[i][1] + 1.0f) * 0.5f);
-			colors.push_back( (vertexNormals[i][2] + 1.0f) * 0.5f);
+		for(size_t i=0; i<elements.size()/3; i++) {
+            printf("fuck: %f\n ", loader.normalList[i]->e[0]);
+            colors.push_back(loader.normalList[i]->e[0]);//(vertexNormals[i][0] + 1.0f) * 0.5f);
+			colors.push_back( (loader.normalList[i]->e[1]));
+			colors.push_back( (loader.normalList[i]->e[2]));
 		}
 		
 		min = computeMinBound();
@@ -192,6 +201,7 @@ private:
 	vector<GLfloat> colors;
 	vector<GLuint> elements;
 	size_t objectCount;
+    vector<GLfloat> normals;
 	
 	glm::vec3 min;
 	glm::vec3 max;
