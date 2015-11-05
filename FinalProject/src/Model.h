@@ -17,7 +17,7 @@ public:
 //		loader.load("resources/cube.obj");
 		//loader.load("resources/sphere.obj");
 		//loader.load("resources/teapot.obj");
-		loader.load("resources/cannon.obj");
+		loader.load("resources/fuckingblender.obj");
 		
 		for(size_t i=0; i<loader.vertexCount; i++) {
 			positions.push_back(loader.vertexList[i]->e[0]);
@@ -55,33 +55,33 @@ public:
 		
 		
 		//TODO compute the vertex normals by averaging the face normals
-		for(size_t i=0; i<elements.size(); i+=3) {
-			size_t vertexId[3];
-			glm::vec3 vertexPos[3];
-			
-			for(size_t v=0; v<3; v++)
-				vertexId[v] = elements[i+v];
-			
-			for(size_t v=0; v<3; v++)
-			{
-				vertexPos[v][0] = positions[ vertexId[v]*3 + 0 ];
-				vertexPos[v][1] = positions[ vertexId[v]*3 + 1 ];
-				vertexPos[v][2] = positions[ vertexId[v]*3 + 2 ];
-			}
-			//printf("\nf%lu \n", i/3);
-			//for(size_t v=0; v<3; v++)
-			//    printf("%zu %.2f %.2f %.2f\n", vertexId[v], vertexPos[v][0], vertexPos[v][1], vertexPos[v][2]);
-			
-			glm::vec3 a = vertexPos[1] - vertexPos[0];
-			glm::vec3 b = vertexPos[2] - vertexPos[1];
-			//printf("%.2f %.2f %.2f X %.2f %.2f %.2f\n", a[0], a[1], a[2], b[0], b[1], b[2]);
-			glm::vec3 faceNormal = glm::normalize(glm::cross(a, b));
-			
-			for(size_t v=0; v<3; v++) {
-				vertexNormals[ vertexId[v] ] += faceNormal;
-				//printf("%zu %.2f %.2f %.2f\n", vertexId[v], faceNormal[0], faceNormal[1], faceNormal[2]);
-			}
-		}
+//		for(size_t i=0; i<elements.size(); i+=3) {
+//			size_t vertexId[3];
+//			glm::vec3 vertexPos[3];
+//			
+//			for(size_t v=0; v<3; v++)
+//				vertexId[v] = elements[i+v];
+//			
+//			for(size_t v=0; v<3; v++)
+//			{
+//				vertexPos[v][0] = positions[ vertexId[v]*3 + 0 ];
+//				vertexPos[v][1] = positions[ vertexId[v]*3 + 1 ];
+//				vertexPos[v][2] = positions[ vertexId[v]*3 + 2 ];
+//			}
+//			//printf("\nf%lu \n", i/3);
+//			//for(size_t v=0; v<3; v++)
+//			//    printf("%zu %.2f %.2f %.2f\n", vertexId[v], vertexPos[v][0], vertexPos[v][1], vertexPos[v][2]);
+//			
+//			glm::vec3 a = vertexPos[1] - vertexPos[0];
+//			glm::vec3 b = vertexPos[2] - vertexPos[1];
+//			//printf("%.2f %.2f %.2f X %.2f %.2f %.2f\n", a[0], a[1], a[2], b[0], b[1], b[2]);
+//			glm::vec3 faceNormal = glm::normalize(glm::cross(a, b));
+//			
+//			for(size_t v=0; v<3; v++) {
+//				vertexNormals[ vertexId[v] ] += faceNormal;
+//				//printf("%zu %.2f %.2f %.2f\n", vertexId[v], faceNormal[0], faceNormal[1], faceNormal[2]);
+//			}
+//		}
 		
 //		for(size_t i=0; i<positions.size(); i++) {
 //			normals.push_back(loader.normalList[i]);
@@ -89,10 +89,10 @@ public:
 //		}
 		
 		for(size_t i=0; i<elements.size()/3; i++) {
-            printf("fuck: %f\n ", loader.normalList[i]->e[0]);
-            colors.push_back(loader.normalList[i]->e[0]);//(vertexNormals[i][0] + 1.0f) * 0.5f);
-			colors.push_back( (loader.normalList[i]->e[1]));
-			colors.push_back( (loader.normalList[i]->e[2]));
+            
+            colors.push_back((vertexNormals[i][0] + 1.0f) * 0.5f);
+			colors.push_back( (vertexNormals[i][1] + 1.0f) * 0.5f);
+			colors.push_back((vertexNormals[i][2] + 1.0f) * 0.5f);
 		}
 		
 		min = computeMinBound();
