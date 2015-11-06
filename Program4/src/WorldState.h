@@ -10,6 +10,7 @@ class WorldState
 private:
 	float frameTimes[NUM_TRACKED_FRAMES];
 	float currentTime;
+	float distance;
 	bool running;
 	Model model;
 	TrackBall trackball;
@@ -122,12 +123,6 @@ public:
 	void updateZTranslate(glm::ivec2 & oldPos, glm::ivec2 & newPos)
 	{
 		#define Z_SENSITIVITY 0.02f // might be helpful to scale translations in z
-		
-		//
-		//
-		// TODO Put your code for a translation in the z direction here.
-		//
-		//
         
         if(newPos.y > oldPos.y) {
         
@@ -139,6 +134,14 @@ public:
         currentModelTransform = translateFromInput * rotationFromInput * translateToOrigin;
 
     }
+	void updateZTranslate()
+	{
+		#define Z_SENSITIVITY 0.02f // might be helpful to scale translations in z
+
+		translateFromInput *= glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, -glm::clamp(this->distance,0.0f,1.0f)));
+		currentModelTransform = translateFromInput * rotationFromInput * translateToOrigin;
+
+	}
 	void setSize(unsigned int x, unsigned int y)
 	{
 		trackball.setSize(x, y);
@@ -149,6 +152,16 @@ public:
 	
 	glm::mat4 getCurrentModelTransform() const
 	{ return currentModelTransform; }
+
+	void setDistance(float distance)
+	{
+		this->distance = distance;
+	}
+
+	float getDistance()
+	{
+		return this->distance;
+	}
 };
 
 #endif

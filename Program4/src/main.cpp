@@ -87,6 +87,7 @@ private:
 	float lastUpdate;
 	float motionTime;
 	glm::ivec2 previousPos;
+	glm::vec2 prevMousePos;
 	bool buttonDown[3];
 
 	void handleEvents(WorldState & state, RenderEngine & render)
@@ -105,11 +106,14 @@ private:
 			{
 				previousPos = glm::vec2(Event.mouseButton.x, Event.mouseButton.y);
 				
-				if(Event.mouseButton.button == sf::Mouse::Left && !shiftDown)
-					buttonDown[0] = 1;
+				if (Event.mouseButton.button == sf::Mouse::Left)
+				{
+					prevMousePos = glm::vec2(Event.mouseButton.x, Event.mouseButton.y);
+					//buttonDown[0] = true;
+				}
+				//if(Event.mouseButton.button == sf::Mouse::Right)
+					//buttonDown[1] = true;
 				if(Event.mouseButton.button == sf::Mouse::Right)
-					buttonDown[1] = true;
-				if(Event.mouseButton.button == sf::Mouse::Middle)
 					buttonDown[2] = true;
 				if(Event.mouseButton.button == sf::Mouse::Left && shiftDown)
 					buttonDown[2] = true;
@@ -117,11 +121,17 @@ private:
 			
 			if (Event.type == sf::Event::MouseButtonReleased)
 			{
-				if(Event.mouseButton.button == sf::Mouse::Left && !shiftDown)
-					buttonDown[0] = false;
+				if(Event.mouseButton.button == sf::Mouse::Left)
+				{
+					//buttonDown[0] = false;
+					state.setDistance(glm::distance(prevMousePos, glm::vec2(Event.mouseButton.x, Event.mouseButton.y)));
+					state.updateZTranslate();
+					printf("%f", state.getDistance());
+				}
+					//buttonDown[0] = false;
+				//if(Event.mouseButton.button == sf::Mouse::Right)
+					//buttonDown[1] = false;
 				if(Event.mouseButton.button == sf::Mouse::Right)
-					buttonDown[1] = false;
-				if(Event.mouseButton.button == sf::Mouse::Middle)
 					buttonDown[2] = false;
 				if(Event.mouseButton.button == sf::Mouse::Left && shiftDown)
 					buttonDown[2] = false;
