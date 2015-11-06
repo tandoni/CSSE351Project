@@ -237,9 +237,11 @@ private:
 
 	void setupShader()
 	{
-		char const * vertPath = "resources/reflectance.vert";
-		char const * fragPath = "resources/reflectance.frag";
-		shaderProg[0] = ShaderManager::shaderFromFile(&vertPath, &fragPath, 1, 1);
+//		char const * vertPath = "resources/reflectance.vert";
+//		char const * fragPath = "resources/reflectance.frag";
+        char const * vertPath = "resources/reflectance.vert";
+        char const * fragPath = "resources/reflectance.frag";
+        shaderProg[0] = ShaderManager::shaderFromFile(&vertPath, &fragPath, 1, 1);
 		
 		char const * lightVPath = "resources/lightPos.vert";
 		char const * lightFPath = "resources/lightPos.frag";

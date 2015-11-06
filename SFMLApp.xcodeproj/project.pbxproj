@@ -20,6 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		856F61861BEADED900FF10DD /* simple.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = simple.frag; sourceTree = "<group>"; };
+		856F61871BEADED900FF10DD /* simple.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = simple.vert; sourceTree = "<group>"; };
 		AF0E3A7F1BC05DD900D0BE0D /* lightPos.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = lightPos.vert; sourceTree = "<group>"; };
 		AF0E3A821BC05DD900D0BE0D /* reflectance.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = reflectance.frag; sourceTree = "<group>"; };
 		AF0E3A831BC05DD900D0BE0D /* reflectance.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = reflectance.vert; sourceTree = "<group>"; };
@@ -318,6 +320,8 @@
 		AF0E3A7A1BC05DD900D0BE0D /* resources */ = {
 			isa = PBXGroup;
 			children = (
+				856F61861BEADED900FF10DD /* simple.frag */,
+				856F61871BEADED900FF10DD /* simple.vert */,
 				AF0E3A7F1BC05DD900D0BE0D /* lightPos.vert */,
 				AF2172661BC42DE900AF0C02 /* lightPos.frag */,
 				AFB220D21BD61CBC0006E960 /* shadowMap.vert */,
