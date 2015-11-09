@@ -1,6 +1,6 @@
 # Blender v2.76 (sub 0) OBJ File: ''
 # www.blender.org
-mtllib fuckingblender.mtl
+# mtllib fuckingblender.mtl
 o cannon_full
 v -0.015500 0.021400 -0.026200
 v -0.014700 0.040100 -0.026100

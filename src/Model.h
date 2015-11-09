@@ -88,11 +88,11 @@ public:
 //			//printf("%.2f %.2f %.2f\n", vertexNormals[i][0], vertexNormals[i][1], vertexNormals[i][2]);
 //		}
 		
-		for(size_t i=0; i<elements.size()/3; i++) {
+		for(size_t i=0; i<loader.normalCount; i++) {
             
-            colors.push_back((vertexNormals[i][0] + 1.0f) * 0.5f);
-			colors.push_back( (vertexNormals[i][1] + 1.0f) * 0.5f);
-			colors.push_back((vertexNormals[i][2] + 1.0f) * 0.5f);
+            colors.push_back(loader.normalList[i]->e[0]);
+			colors.push_back(loader.normalList[i]->e[1]);
+			colors.push_back(loader.normalList[i]->e[2]);
 		}
 		
 		min = computeMinBound();

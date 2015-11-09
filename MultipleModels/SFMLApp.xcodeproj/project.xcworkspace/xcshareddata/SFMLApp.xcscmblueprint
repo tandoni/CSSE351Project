@@ -1,0 +1,25 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "7b649c94-1f73-451f-bb65-d9b0d3ab445b",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+    "7b649c94-1f73-451f-bb65-d9b0d3ab445b" : {
+
+    }
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "7b649c94-1f73-451f-bb65-d9b0d3ab445b" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "4BE53198-3F97-49EA-8E5D-473A48CA8C38",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "7b649c94-1f73-451f-bb65-d9b0d3ab445b" : "1516a-csse351-tandoni\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "SFMLApp",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "MultipleModels\/SFMLApp.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "http:\/\/svn.csse.rose-hulman.edu\/repos\/1516a-csse351-tandoni",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "7b649c94-1f73-451f-bb65-d9b0d3ab445b"
+    }
+  ]
+}
