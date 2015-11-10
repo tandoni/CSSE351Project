@@ -14,46 +14,46 @@ using namespace std; //makes using vectors easy
 class Material
 {
 public:
-	
+
 	Material() {
 		texturePath = NULL;
-		
+
 		Ka = glm::vec4(0.1, 0.1, 0.1, 1.0);
 		Kd = glm::vec4(0.5, 0.5, 0.5, 1.0);
 		Ks = glm::vec4(0.8, 0.8, 0.8, 1.0);
 		specAlpha = 10;
 	}
-	
+
 	Material(Material const & m) {
 		texturePath = NULL;
 		*this = m;
 	}
-	
+
 	Material & operator=(Material const & m) {
 		if(&m == this)
 			return *this;
 
 		if(texturePath != NULL)
 			free(texturePath);
-		
+
 		Ka = m.Ka;
 		Kd = m.Kd;
 		Ks = m.Ks;
 		specAlpha = m.specAlpha;
-		
+
 		texturePath = NULL;
-		
+
 		if(m.texturePath != NULL) {
 			texturePath = (char*) malloc( (strlen(m.texturePath)+1)*sizeof(char));
 			strncpy(texturePath, m.texturePath, strlen(m.texturePath));
 		}
 	}
-	
+
 	~Material() {
 		if(texturePath != NULL)
 			free(texturePath);
 	}
-	
+
 	glm::vec4 Ka;
 	glm::vec4 Kd;
 	glm::vec4 Ks;
@@ -64,16 +64,16 @@ public:
 class Model
 {
 public:
-	
+
 	void init(char const * path)
 	{
         printf("FILE PATH IS: %s \n", path);
 		objLoader loader;
 		loader.load(path);
-		
+
 		Material defaultMaterial;
 			materials.push_back(defaultMaterial);
-		
+
 		for(size_t i=0; i<loader.materialCount; i++)
 		{
 			Material m;
@@ -94,16 +94,16 @@ public:
 			normals[i] = glm::vec3(0.0f);
 
 		switchMaterialAt.push_back(0);
-		
+
 		for(size_t f=0; f<loader.faceCount; f++) {
 			obj_face const * face = loader.faceList[f];
-			
+
 			int faceMaterial = face->material_index+1;
 			bool firstMaterial = activeMaterial.size() == 0;
 			bool materialChanged = !firstMaterial && activeMaterial[activeMaterial.size()-1] != faceMaterial;
 			if(firstMaterial || materialChanged)
 				activeMaterial.push_back(faceMaterial);
-			
+
 			if(!firstMaterial && materialChanged)
 				switchMaterialAt.push_back(f);
 
@@ -118,7 +118,7 @@ public:
 				int pId = face->vertex_index[v];
 				int nId = face->normal_index[v];
 				int tId = face->texture_index[v];
-                
+
 //                printf("pID = %d , nID = %d , tID = %d \n", pId,nId,tId);
 
 				indicesMatch = indicesMatch && (pId == nId == tId);
@@ -143,8 +143,8 @@ public:
 				pId[v] = face->vertex_index[v];
 				nId[v] = face->normal_index[v];
 				tId[v] = face->texture_index[v];
-                
-                
+
+
 			}
 
 			for(size_t v=0; v<face->vertex_count; v++) {
@@ -184,7 +184,7 @@ public:
 				texCoords[ pId[v] ] = t[v];
 			}
 		}
-		
+
 		switchMaterialAt.push_back(loader.faceCount);
 
 		for(size_t i=0; i<normals.size(); i++)
@@ -195,20 +195,20 @@ public:
 		center = computeCentroid();
 		dim = computeDimension();
 	}
-	
+
 	vector<glm::vec3> const getPositions() const
 	{ return positions; }
-	
+
 	vector<glm::vec3> const getNormals() const
 	{ return normals; }
 
 	vector<glm::vec2> const getTexCoords() const
 	{ return texCoords; }
-	
+
 	vector<GLuint> const getElements() const
 	{ return elements; }
 
-	GLuint setupAttributeBuffers()
+	void setupAttributeBuffers()
 	{
 		glGenBuffers(3, attrBuffer);
 
@@ -250,16 +250,16 @@ public:
 		size_t KdSlot = 1;
 		size_t KsSlot = 2;
 		size_t specAlphaSlot = 3;
-		
+
 		for(size_t matId=0; matId<switchMaterialAt.size()-1; matId++)
 		{
 			glBindVertexArray(vertArray);
-			
+
 			glUniform4fv(glGetUniformLocation(shaderId, "Ka"), 1, &materials[matId].Ka[0]);
 			glUniform4fv(glGetUniformLocation(shaderId, "Kd"), 1, &materials[matId].Kd[0]);
 			glUniform4fv(glGetUniformLocation(shaderId, "Ks"), 1, &materials[matId].Ks[0]);
 			glUniform4fv(glGetUniformLocation(shaderId, "specAlpha"), 1, &materials[matId].specAlpha);
-			
+
 			size_t elementCount = (switchMaterialAt[matId+1] - switchMaterialAt[matId]);
 			void* startIndex = (void*) (sizeof(GLuint) * switchMaterialAt[matId]*3);
 			glDrawElements(GL_TRIANGLES, elementCount*3, GL_UNSIGNED_INT, startIndex);
@@ -269,28 +269,28 @@ public:
 
 	size_t getVertexCount() const
 	{ return positions.size()/3; }
-	
+
 	size_t getPositionBytes() const
 	{ return positions.size()*sizeof(glm::vec3); }
-	
+
 	size_t getNormalBytes() const
 	{ return normals.size()*sizeof(glm::vec3); }
 
 	size_t getTexCoordBytes() const
 	{ return texCoords.size()*sizeof(glm::vec2); }
-	
+
 	size_t getElementBytes() const
 	{ return elements.size()*sizeof(GLuint); }
-	
+
 	glm::vec3 getMinBound() const
 	{ return min; }
-	
+
 	glm::vec3 getMaxBound() const
 	{ return max; }
-	
+
 	glm::vec3 getCentroid() const
 	{ return center; }
-	
+
 	glm::vec3 getDimension() const
 	{ return dim; }
 
@@ -299,17 +299,17 @@ public:
 
 	void setTransform(glm::mat4 transform)
 	{ this->transform = transform; }
-	
+
 private:
-    
-	
+
+
 	glm::vec3 computeMinBound()
 	{
 		glm::vec3 bound;
-		
+
 		for(int c=0; c<3; c++)
 			bound[c] = std::numeric_limits<float>::max();
-		
+
 		for(int i=0; i<positions.size(); i++)
 		{
 			for(int c=0; c<3; c++)
@@ -318,17 +318,17 @@ private:
 					bound[c] = positions[i][c];
 			}
 		}
-		
+
 		return bound;
 	}
-	
+
 	glm::vec3 computeMaxBound()
 	{
 		glm::vec3 bound;
-		
+
 		for(int c=0; c<3; c++)
 			bound[c] = -std::numeric_limits<float>::max();
-		
+
 		for(int i=0; i<positions.size(); i+=3)
 		{
 			for(int c=0; c<3; c++)
@@ -337,25 +337,25 @@ private:
 					bound[c] = positions[i][c];
 			}
 		}
-		
+
 		return bound;
 	}
-	
+
 	glm::vec3 computeCentroid()
 	{
 		glm::vec3 center = glm::vec3(0);
 		float positionCount = 1.0f/(positions.size()/3.0f);
-		
+
 		for(int i=0; i<positions.size(); i+=3)
 		{
 			center[0] += positions[i][0] * positionCount;
 			center[1] += positions[i][1] * positionCount;
 			center[2] += positions[i][2] * positionCount;
 		}
-		
+
 		return center;
 	}
-	
+
 	glm::vec3 computeDimension()
 	{
 		glm::vec3 max = getMaxBound();
@@ -399,7 +399,7 @@ private:
 	vector<size_t> activeMaterial;
 	vector<size_t> switchMaterialAt;
 	size_t objectCount;
-	
+
 	glm::vec3 min;
 	glm::vec3 max;
 	glm::vec3 dim;
