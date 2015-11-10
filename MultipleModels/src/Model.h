@@ -119,13 +119,13 @@ public:
 				int nId = face->normal_index[v];
 				int tId = face->texture_index[v];
                 
-//                printf("pID = %d , nID = %d , tID = %d \n", pId,nId,tId);
+                printf("pID = %d , nID = %d , tID = %d \n", pId,nId,tId);
 
 				indicesMatch = indicesMatch && (pId == nId == tId);
 			}
 
 			if( !indicesMatch ) {
-//				fprintf(stderr, "OBJ has non-matching pos/tex/norm indices. Final model may be incorrect.\n");
+				fprintf(stderr, "OBJ has non-matching pos/tex/norm indices. Final model may be incorrect.\n");
 			}
 
 			for(size_t v=0; v<face->vertex_count; v++)
