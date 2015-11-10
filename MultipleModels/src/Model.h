@@ -119,13 +119,11 @@ public:
 				int nId = face->normal_index[v];
 				int tId = face->texture_index[v];
 
-//                printf("pID = %d , nID = %d , tID = %d \n", pId,nId,tId);
-
 				indicesMatch = indicesMatch && (pId == nId == tId);
 			}
 
 			if( !indicesMatch ) {
-//				fprintf(stderr, "OBJ has non-matching pos/tex/norm indices. Final model may be incorrect.\n");
+				fprintf(stderr, "OBJ has non-matching pos/tex/norm indices. Final model may be incorrect.\n");
 			}
 
 			for(size_t v=0; v<face->vertex_count; v++)
@@ -300,6 +298,16 @@ public:
 	void setTransform(glm::mat4 transform)
 	{ this->transform = transform; }
 
+	void setMass(float m)
+	{
+		this->mass = m;
+	}
+
+	float getMass()
+	{
+		return this->mass;
+	}
+
 private:
 
 
@@ -399,6 +407,7 @@ private:
 	vector<size_t> activeMaterial;
 	vector<size_t> switchMaterialAt;
 	size_t objectCount;
+	float mass;
 
 	glm::vec3 min;
 	glm::vec3 max;

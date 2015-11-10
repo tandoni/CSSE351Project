@@ -1,4 +1,4 @@
-﻿Build started 11/9/2015 1:11:57 PM.
+﻿Build started 11/9/2015 11:59:43 PM.
      1>Project "C:\Users\Austin\Desktop\Cannon Golf\MultipleModels\ConsoleApplication1.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /Od /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt src\main.cpp
@@ -10,15 +10,14 @@
      1>c:\users\austin\desktop\cannon golf\multiplemodels\src\Model.h(83): warning C4267: 'argument' : conversion from 'size_t' to 'glm::tvec4<float,0>::length_type', possible loss of data
      1>c:\users\austin\desktop\cannon golf\multiplemodels\src\Model.h(83): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
      1>c:\users\austin\desktop\cannon golf\multiplemodels\src\Model.h(84): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\austin\desktop\cannon golf\multiplemodels\src\Model.h(152): warning C4267: 'argument' : conversion from 'size_t' to 'glm::tvec3<float,0>::length_type', possible loss of data
-     1>c:\users\austin\desktop\cannon golf\multiplemodels\src\Model.h(152): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\austin\desktop\cannon golf\multiplemodels\src\Model.h(167): warning C4267: 'argument' : conversion from 'size_t' to 'glm::tvec3<float,0>::length_type', possible loss of data
-     1>c:\users\austin\desktop\cannon golf\multiplemodels\src\Model.h(167): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\austin\desktop\cannon golf\multiplemodels\src\Model.h(176): warning C4267: 'argument' : conversion from 'size_t' to 'glm::tvec2<float,0>::length_type', possible loss of data
-     1>c:\users\austin\desktop\cannon golf\multiplemodels\src\Model.h(176): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\austin\desktop\cannon golf\multiplemodels\src\Model.h(266): warning C4267: 'argument' : conversion from 'size_t' to 'GLsizei', possible loss of data
+     1>c:\users\austin\desktop\cannon golf\multiplemodels\src\Model.h(150): warning C4267: 'argument' : conversion from 'size_t' to 'glm::tvec3<float,0>::length_type', possible loss of data
+     1>c:\users\austin\desktop\cannon golf\multiplemodels\src\Model.h(150): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\austin\desktop\cannon golf\multiplemodels\src\Model.h(165): warning C4267: 'argument' : conversion from 'size_t' to 'glm::tvec3<float,0>::length_type', possible loss of data
+     1>c:\users\austin\desktop\cannon golf\multiplemodels\src\Model.h(165): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\austin\desktop\cannon golf\multiplemodels\src\Model.h(174): warning C4267: 'argument' : conversion from 'size_t' to 'glm::tvec2<float,0>::length_type', possible loss of data
+     1>c:\users\austin\desktop\cannon golf\multiplemodels\src\Model.h(174): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\austin\desktop\cannon golf\multiplemodels\src\Model.h(263): warning C4267: 'argument' : conversion from 'size_t' to 'GLsizei', possible loss of data
      1>c:\users\austin\desktop\cannon golf\multiplemodels\src\WorldState.h(240): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\austin\desktop\cannon golf\multiplemodels\src\RenderEngine.h(141): warning C4244: 'argument' : conversion from 'const int' to 'GLfloat', possible loss of data
      1>src\main.cpp(154): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
      1>src\main.cpp(155): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
      1>src\main.cpp(168): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
@@ -39,4 +38,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.04
+Time Elapsed 00:00:04.30
