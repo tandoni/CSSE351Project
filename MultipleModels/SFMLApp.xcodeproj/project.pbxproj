@@ -18,6 +18,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		85B98BD01BF19C09003BFB68 /* cannon.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = cannon.frag; sourceTree = "<group>"; };
+		85B98BD11BF19C09003BFB68 /* cannon.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = cannon.vert; sourceTree = "<group>"; };
+		85B98BD21BF19C09003BFB68 /* cannonball.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = cannonball.frag; sourceTree = "<group>"; };
+		85B98BD31BF19C09003BFB68 /* cannonball.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = cannonball.vert; sourceTree = "<group>"; };
 		AF0E3A821BC05DD900D0BE0D /* reflectance.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = reflectance.frag; sourceTree = "<group>"; };
 		AF0E3A831BC05DD900D0BE0D /* reflectance.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = reflectance.vert; sourceTree = "<group>"; };
 		AF0E3A8E1BC17B4D00D0BE0D /* list.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = list.cpp; sourceTree = "<group>"; };
@@ -313,6 +317,10 @@
 		AF0E3A7A1BC05DD900D0BE0D /* resources */ = {
 			isa = PBXGroup;
 			children = (
+				85B98BD01BF19C09003BFB68 /* cannon.frag */,
+				85B98BD11BF19C09003BFB68 /* cannon.vert */,
+				85B98BD21BF19C09003BFB68 /* cannonball.frag */,
+				85B98BD31BF19C09003BFB68 /* cannonball.vert */,
 				AF0E3A831BC05DD900D0BE0D /* reflectance.vert */,
 				AF0E3A821BC05DD900D0BE0D /* reflectance.frag */,
 			);

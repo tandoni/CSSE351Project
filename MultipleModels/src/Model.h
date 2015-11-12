@@ -119,7 +119,7 @@ public:
 				int nId = face->normal_index[v];
 				int tId = face->texture_index[v];
                 
-                printf("pID = %d , nID = %d , tID = %d \n", pId,nId,tId);
+               // printf("pID = %d , nID = %d , tID = %d \n", pId,nId,tId);
 
 				indicesMatch = indicesMatch && (pId == nId == tId);
 			}
@@ -137,7 +137,7 @@ public:
 
 			glm::vec3 p[POS_DIM];
 			glm::vec3 n[POS_DIM];
-			glm::vec2 t[TEX_DIM];
+			glm::vec2 t[POS_DIM];
 
 			for(size_t v=0; v<face->vertex_count; v++) {
 				pId[v] = face->vertex_index[v];

@@ -42,21 +42,22 @@ public:
     
     void display(WorldState & state)
     {
-        size_t shaderId;
-        
-        shaderId = 0;
+//        glViewport(0, 0, mapSizeX, mapSizeY);
+//        size_t shaderId;
+//        
+//        shaderId = 0;
         
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-        glUseProgram(shaderProg[shaderId]);
-        uploadUniforms(shaderProg[shaderId], state);
-        
         //draw
         for(int i=0;i<state.getNumModels();i++)
-            state.getModel(i).draw(shaderProg[shaderId]);
-        
+        {
+            glUseProgram(shaderProg[i]);
+            uploadUniforms(shaderProg[i], state);
+            state.getModel(i).draw(shaderProg[i]);
+        }
         
         glUseProgram(0);
         checkGLError("model");
@@ -82,9 +83,13 @@ private:
     
     void setupShader()
     {
-        char const * vertPath = "resources/reflectance.vert";
-        char const * fragPath = "resources/reflectance.frag";
-        shaderProg[0] = ShaderManager::shaderFromFile(&vertPath, &fragPath, 1, 1);
+        char const * cannonBallVertPath = "resources/cannonball.vert";
+        char const * cannonBallFragPath = "resources/cannonball.frag";
+        shaderProg[0] = ShaderManager::shaderFromFile(&cannonBallVertPath, &cannonBallFragPath, 1, 1);
+        
+        char const * cannonVertPath = "resources/cannon.vert";
+        char const * cannonFragPath = "resources/cannon.frag";
+        shaderProg[1] = ShaderManager::shaderFromFile(&cannonVertPath, &cannonFragPath, 1, 1);
         
         checkGLError("shader");
     }
@@ -109,6 +114,7 @@ private:
             glm::vec4 camPos = state.getCameraPos();
             glm::mat4 Lr = state.getLightRotate();
             glm::mat4 Lv = state.getLightViewMatrix();
+            glm::vec3 velocity = glm::vec3(0,0,-0.5);
             glm::mat4 Lp;
             Lp = glm::perspective(1.0f, fov, _near, _far);
             Lp = glm::ortho(-15.0f, 15.0f, -15.0f, 15.0f, 0.0f, 50.0f);
@@ -132,6 +138,8 @@ private:
             glUniformMatrix4fv(glGetUniformLocation(shaderId, "Lv"), 1, GL_FALSE, &Lv[0][0]);
             glUniform4fv(glGetUniformLocation(shaderId, "lightPos"), 1, &lightPos[0]);
             glUniform4fv(glGetUniformLocation(shaderId, "camPos"), 1, &camPos[0]);
+            if (shaderId == 0)
+                glUniform3fv(glGetUniformLocation(0, "velocity"), 1, &velocity[0]);
             
             //		glUniform1f(glGetUniformLocation(shaderId, "elapsedTime"), state.currentTime);
             //		glUniform1f(glGetUniformLocation(shaderId, "near"), _near);

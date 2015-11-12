@@ -72,7 +72,7 @@ public:
         models.push_back(n);
 		
 		glm::vec3 center = m.getCentroid();
-		glm::vec3 max = m.getMaxBound();
+        glm::vec3 max = glm::vec3(100.0f,100.0f,100.0f);
 		glm::vec3 min = m.getMinBound();
 		glm::vec3 dim = m.getDimension();
 		glm::vec3 toMax = max-center;
