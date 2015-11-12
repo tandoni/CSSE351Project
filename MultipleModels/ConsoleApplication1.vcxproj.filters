@@ -72,22 +72,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="resources\lightPos.frag">
+    <None Include="resources\reflectance.frag">
       <Filter>resources</Filter>
     </None>
-    <None Include="resources\lightPos.vert">
-      <Filter>resources</Filter>
-    </None>
-    <None Include="resources\simple.frag">
-      <Filter>resources</Filter>
-    </None>
-    <None Include="resources\simple.vert">
-      <Filter>resources</Filter>
-    </None>
-    <None Include="resources\texture.frag">
-      <Filter>resources</Filter>
-    </None>
-    <None Include="resources\texture.vert">
+    <None Include="resources\reflectance.vert">
       <Filter>resources</Filter>
     </None>
   </ItemGroup>
