@@ -207,9 +207,9 @@ private:
 
 			if(event.type == sf::Event::MouseMoved)
 			{
-//				state.cursorAbsolutePos[0] = event.mouseMove.x;
-//				state.cursorAbsolutePos[1] = (state.currentRes[1]-event.mouseMove.y);
-                state.cameraLook
+				state.cursorAbsolutePos[0] = event.mouseMove.x;
+				state.cursorAbsolutePos[1] = (state.currentRes[1]-event.mouseMove.y);
+
 			}
 
 		}
