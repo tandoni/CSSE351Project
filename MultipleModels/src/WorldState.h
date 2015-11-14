@@ -56,20 +56,27 @@ public:
 			frameTimes[i] = 0.0f;
         Model m;
         Model n;
+        Model ball;
 		running = true;
         force=0.0f;
 		m = Model();
-		m.init("resources/tfloor.obj");
+		m.init("resources/finalCannon.obj");
 		m.setupAttributeBuffers();
         
         
         //        //MODEL 2 LOADING CODE **************************************
+        ball = Model();
+        ball.init("resources/finalBall.obj");
+        ball.setupAttributeBuffers();
+        
+        
         n = Model();
-        n.init("resources/tcannon.obj");
+        n.init("resources/finalGround.obj");
         n.setupAttributeBuffers();
         
         models.push_back(m);
         models.push_back(n);
+        models.push_back(ball);
 		
 		glm::vec3 center = m.getCentroid();
         glm::vec3 max = m.getMaxBound();
