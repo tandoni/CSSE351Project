@@ -208,7 +208,7 @@ public:
 	vector<GLuint> const getElements() const
 	{ return elements; }
 
-	GLuint setupAttributeBuffers()
+	void setupAttributeBuffers()
 	{
 		glGenBuffers(3, attrBuffer);
 
