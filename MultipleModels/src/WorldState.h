@@ -33,6 +33,7 @@ public:
 	bool lightRotating;
 	bool modelRotatingX;
     bool modelRotatingY;
+    bool gravity_on;
 
 	float cursorScrollAmount;
 	float center[3];
@@ -42,7 +43,7 @@ public:
 	float cursorAbsolutePos[2];
 	int currentRes[2];
 	bool mouseButtonDown;
-    
+    Model ground;
     vector<Model> models;
 
 
@@ -59,6 +60,7 @@ public:
         Model ball;
 		running = true;
         force=0.0f;
+        gravity_on=false;
 		m = Model();
 		m.init("resources/finalCannon.obj");
 		m.setupAttributeBuffers();
@@ -76,7 +78,7 @@ public:
         
         models.push_back(m);
         models.push_back(n);
-        models.push_back(ball);
+//        models.push_back(ball);
 		
 		glm::vec3 center = m.getCentroid();
         glm::vec3 max = m.getMaxBound();
@@ -193,6 +195,11 @@ public:
         if(modelRotatingX)
             modelRotate=modelIncrementX*modelRotate;
         
+        if(gravity_on)
+        {
+            this->updateYTranslate();
+        }
+        
         this->updateZTranslate();
 		
 		glm::vec3 currentLightPos = glm::vec3(lightRotate*lightPos);
@@ -241,7 +248,9 @@ public:
 	
 	void toggleLightRotate()
 	{ lightRotating = !lightRotating; }
-	
+    
+    void toggleGravity()
+    {gravity_on=!gravity_on;}
 	void zoomCamera(int delta)
 	{
 		float d = pow(0.95, delta);
@@ -261,6 +270,13 @@ public:
         tforce/=RESOLUTION;
         
         modelTranslate*=glm::translate(glm::mat4(1.0f),glm::vec3(0,0,-glm::clamp(tforce,0.0f,1.0f)));
+    }
+    
+    void updateYTranslate()
+    {
+        #define Z_SENSTIVITY 0.02f
+        
+        modelTranslate*=glm::translate(glm::mat4(1.0f),glm::vec3(0,-0.2,0));
     }
 };
 

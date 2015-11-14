@@ -171,6 +171,9 @@ private:
             if((event.type == sf::Event::TextEntered) && (event.text.unicode == 'p')){
                 state.cameraLook.x-=0.7;
             }
+            if((event.type == sf::Event::TextEntered) && (event.text.unicode == 'g')){
+                state.toggleGravity();
+            }
 
 			if(event.type == sf::Event::MouseButtonPressed)
 			{
