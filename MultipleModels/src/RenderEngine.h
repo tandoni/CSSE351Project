@@ -37,28 +37,22 @@ public:
         glCullFace(GL_BACK);
         glEnable(GL_CULL_FACE);
         
-//        setupTextures();
-        
         setupShader();
     }
     
-    void display(WorldState & state)
-    {
+    void display(WorldState & state){
 //        glViewport(0, 0, mapSizeX, mapSizeY);
-//        size_t shaderId;
-//        
-//        shaderId = 0;
         
+
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
         //draw
-        for(int i=0;i<state.getNumModels();i++)
-        {
-            glUseProgram(shaderProg[i]);
-            uploadUniforms(shaderProg[i], state);
-            state.getModel(i).draw(shaderProg[i]);
+        for(int i=0;i<state.getNumModels();i++){
+            glUseProgram(shaderProg[0]);
+            uploadUniforms(shaderProg[0], state);
+            state.getModel(i).draw(shaderProg[0]);
         }
         
         glUseProgram(0);
@@ -84,81 +78,28 @@ private:
     float _far;
     float fov;
     
-    void setupShader()
-    {
-        char const * cannonBallVertPath = "resources/cannonball.vert";
-        char const * cannonBallFragPath = "resources/cannonball.frag";
+    void setupShader(){
+        char const * cannonBallVertPath = "resources/reflectance.vert";
+        char const * cannonBallFragPath = "resources/reflectance.frag";
         shaderProg[0] = ShaderManager::shaderFromFile(&cannonBallVertPath, &cannonBallFragPath, 1, 1);
         
-        char const * cannonVertPath = "resources/cannon.vert";
-        char const * cannonFragPath = "resources/cannon.frag";
-        shaderProg[1] = ShaderManager::shaderFromFile(&cannonVertPath, &cannonFragPath, 1, 1);
+//        char const * cannonVertPath = "resources/cannon.vert";
+//        char const * cannonFragPath = "resources/cannon.frag";
+//        shaderProg[1] = ShaderManager::shaderFromFile(&cannonVertPath, &cannonFragPath, 1, 1);
         
         checkGLError("shader");
     }
     
-//    void setupTextures()
-//    {
-//        //generate texture names
-//        glGenTextures(4, textures);
-////        sf::Image image;
-//        
-//        char const * imagePaths[4] = {"resources/rhit1.png", "resources/rhit2.png", "resources/rhit3.png", "resources/rhit4.png"};
-//        
-//        for(int i=0; i<4; i++)
-//        {
-//            if (!image.loadFromFile(imagePaths[i])) {
-//                fprintf(stderr, "Could not load: %s\n", imagePaths[i]);
-//                exit(2);
-//            }
-//            int texSizeX = image.getSize().x;
-//            int texSizeY = image.getSize().y;
-//            unsigned char * texData = (unsigned char*) image.getPixelsPtr();
-//            
-//            //TODO bind a texture object
-//            
-//            glBindTexture(GL_TEXTURE_2D, textures[i]);
-//            
-//            //TODO set min/mag sampling parameters
-//            
-//            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-//            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-//            
-//            //TODO set edge wrap parameters
-//            
-//            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-//            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-//            
-//            //TODO upload texture and generate mipmap
-//            bool  mipmapEnabled = true;
-//            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,texSizeX, texSizeY, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
-//            if(mipmapEnabled)
-//            {
-//                //mip mapping, upload 0 level, then build maps
-//                glGenerateMipmap(GL_TEXTURE_2D);
-//            }
-//            else
-//            {
-//                //no mip mapping, upload 0 level only
-//            }
-//            
-//            //TODO unbind the texture
-//            glBindTexture(GL_TEXTURE_2D, 0);
-//        }
-//        
-//        checkGLError("texture");
-//    }
-
-    
     void uploadUniforms(GLuint shaderId, WorldState const & state)
     {
-        for(int i=0;i<state.getNumModels();i++)
-        {
-            glm::vec3 dim = state.getModel(i).getDimension();
-            float maxDim = std::max(dim[0], std::max(dim[1], dim[2]));
-            _near = maxDim*0.1f;
-            _far  = maxDim*3.0f;
-            fov = 0.9f;
+		for (int i = 0; i < state.getNumModels(); i++){
+			if (i == 0){
+				glm::vec3 dim = state.getModel(i).getDimension();
+				float maxDim = std::max(dim[0], std::max(dim[1], dim[2]));
+				_near = maxDim*0.1f;
+				_far = maxDim*3.0f;
+				fov = 0.9f;
+			}
             
             glm::mat4 P = glm::perspective(1.0f, fov, _near, _far);
             glm::mat4 mT = state.getModelTranslate();
@@ -170,10 +111,10 @@ private:
             glm::vec4 camPos = state.getCameraPos();
             glm::mat4 Lr = state.getLightRotate();
             glm::mat4 Lv = state.getLightViewMatrix();
-            glm::vec3 velocity = glm::vec3(0,0,-0.5);
+//            glm::vec3 velocity = glm::vec3(0,0,-0.5);
             glm::mat4 Lp;
             Lp = glm::perspective(1.0f, fov, _near, _far);
-            Lp = glm::ortho(-15.0f, 15.0f, -15.0f, 15.0f, 0.0f, 50.0f);
+//            Lp = glm::ortho(-15.0f, 15.0f, -15.0f, 15.0f, 0.0f, 50.0f);
             
             //hacky light source size change
             GLfloat maxDis = state.getModel(i).getDimension()[2] * 3;
@@ -194,15 +135,15 @@ private:
             glUniformMatrix4fv(glGetUniformLocation(shaderId, "Lv"), 1, GL_FALSE, &Lv[0][0]);
             glUniform4fv(glGetUniformLocation(shaderId, "lightPos"), 1, &lightPos[0]);
             glUniform4fv(glGetUniformLocation(shaderId, "camPos"), 1, &camPos[0]);
-            if (shaderId == 0)
-                glUniform3fv(glGetUniformLocation(0, "velocity"), 1, &velocity[0]);
+//            if (shaderId == 0)
+//                glUniform3fv(glGetUniformLocation(0, "velocity"), 1, &velocity[0]);
             
             //		glUniform1f(glGetUniformLocation(shaderId, "elapsedTime"), state.currentTime);
             //		glUniform1f(glGetUniformLocation(shaderId, "near"), _near);
             //		glUniform1f(glGetUniformLocation(shaderId, "far"), _far);
             //		glUniform1f(glGetUniformLocation(shaderId, "fov"), fov);
             //		glUniform1f(glGetUniformLocation(shaderId, "cursorScrollAmount"), state.cursorScrollAmount);
-            glUniform2f(glGetUniformLocation(shaderId, "resolution"), state.currentRes[0], state.currentRes[1]);
+			//      glUniform2f(glGetUniformLocation(shaderId, "resolution"), state.currentRes[0], state.currentRes[1]);
             //		glUniform3f(glGetUniformLocation(shaderId, "modelCenter"),  state.center[0], state.center[1], state.center[2]);
             //		glUniform3f(glGetUniformLocation(shaderId, "lookAtPos"),  state.cameraLook[0], state.cameraLook[1], state.cameraLook[2]);
             //		glUniform3f(glGetUniformLocation(shaderId, "cameraUp"),  state.cameraUp[0], state.cameraUp[1], state.cameraUp[2]);
