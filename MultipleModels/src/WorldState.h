@@ -76,11 +76,11 @@ public:
         n.init("resources/finalGround.obj");
         n.setupAttributeBuffers();
         
+		models.push_back(n);
         models.push_back(m);
-        models.push_back(n);
-//        models.push_back(ball);
+        models.push_back(ball);
 		
-		glm::vec3 center = m.getCentroid();
+		glm::vec3 center = -m.getCentroid();
         glm::vec3 max = m.getMaxBound();
 		glm::vec3 min = m.getMinBound();
 		glm::vec3 dim = m.getDimension();
@@ -91,7 +91,7 @@ public:
 		printf("cen [%.2f %.2f %.2f]\n", center[0], center[1], center[2]);
 		printf("dim [%.2f %.2f %.2f]\n", dim[0], dim[1], dim[2]);
 		float camDistance = std::max(dim[0], dim[1]);
-		cameraPos = glm::vec3(-5,1,1); //base camera pos
+		cameraPos = glm::vec3(5,1,1); //base camera pos
         //cameraPos = glm::rotate(cameraPos, 1.5, glm::vec3(1,0,0));
 		cameraLook = glm::vec3(0,1,0);
 		cameraUp = glm::vec3(0,1,0);
