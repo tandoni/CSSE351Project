@@ -172,31 +172,27 @@ private:
                 state.cameraLook.x-=0.7;
             }
 
-			if(event.type == sf::Event::MouseButtonPressed)
-			{
-                prevPos=glm::vec2(event.mouseButton.x,event.mouseButton.y);
+			if(event.type == sf::Event::MouseButtonPressed){
+//                prevPos=glm::vec2(event.mouseButton.x,event.mouseButton.y);
                 
 //				state.lastClickPos[0] = event.mouseButton.x;
 //				state.lastClickPos[1] = (state.currentRes[1]-event.mouseButton.y);
 //				state.lastFrameDragPos[0] = event.mouseButton.x;
 //				state.lastFrameDragPos[1] = (state.currentRes[1]-event.mouseButton.y);
-				state.mouseButtonDown = true;
+//				state.mouseButtonDown = true;
 			}
 
 			if(event.type == sf::Event::MouseButtonReleased)
             {
-                state.setForce(glm::distance(prevPos,glm::vec2(event.mouseButton.x,event.mouseButton.y)));
-				state.mouseButtonDown = false;
+//                state.setForce(glm::distance(prevPos,glm::vec2(event.mouseButton.x,event.mouseButton.y)));
+//				state.mouseButtonDown = false;
             }
 
-			if(event.type == sf::Event::MouseMoved && state.mouseButtonDown)
-			{
+			if(event.type == sf::Event::MouseMoved && state.mouseButtonDown){
 				state.cursorDragAmount[0] += state.lastFrameDragPos[0] - event.mouseMove.x;
 				state.cursorDragAmount[1] += state.lastFrameDragPos[1] - (state.currentRes[1]-event.mouseMove.y);
 				state.lastFrameDragPos[0] = event.mouseMove.x;
-				state.lastFrameDragPos[1] = (state.currentRes[1]-event.mouseMove.y);
-                
-                
+				state.lastFrameDragPos[1] = (state.currentRes[1]-event.mouseMove.y);          
 			}
 
 			if(event.type == sf::Event::MouseWheelMoved)
