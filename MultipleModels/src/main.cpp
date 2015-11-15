@@ -128,9 +128,22 @@ private:
 			if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))
 				state.setRunning(false);
 			
-            if((event.type == sf::Event::TextEntered) && (event.text.unicode == 'r')){
-				state.toggleModelRotateY();
+			if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::E)){
+				state.toggleModelRotateNegY();
             }
+
+			if ((event.type == sf::Event::KeyReleased) && (event.key.code == sf::Keyboard::E)){
+				state.toggleModelRotateNegY();
+			}
+
+			if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Q)){
+				state.toggleModelRotateY();
+			}
+
+			if ((event.type == sf::Event::KeyReleased) && (event.key.code == sf::Keyboard::Q)){
+				state.toggleModelRotateY();
+			}
+
             if((event.type == sf::Event::TextEntered) && (event.text.unicode == 'x')){
                 state.toggleModelRotateX();
             }
@@ -140,6 +153,7 @@ private:
 			if(event.type == sf::Event::Resized) {
 				resize(event.size.width, event.size.height);
 			}
+
             if((event.type == sf::Event::TextEntered) && (event.text.unicode == 'z')){
                 state.cameraPos.y+=0.1;
                 state.cameraLook.y+=0.1;
@@ -164,19 +178,13 @@ private:
                 state.cameraPos.z+=0.1;
                 state.cameraLook.z+=0.1;
             }
-            
-            if((event.type == sf::Event::TextEntered) && (event.text.unicode == 'o')){
-                state.cameraLook.x+=0.7;
-            }
-            if((event.type == sf::Event::TextEntered) && (event.text.unicode == 'p')){
-                state.cameraLook.x-=0.7;
-            }
+
             if((event.type == sf::Event::TextEntered) && (event.text.unicode == 'g')){
                 state.toggleGravity();
             }
 
 			if(event.type == sf::Event::MouseButtonPressed){
-//                prevPos=glm::vec2(event.mouseButton.x,event.mouseButton.y);
+                prevPos=glm::vec2(event.mouseButton.x,event.mouseButton.y);
                 
 //				state.lastClickPos[0] = event.mouseButton.x;
 //				state.lastClickPos[1] = (state.currentRes[1]-event.mouseButton.y);
@@ -187,8 +195,8 @@ private:
 
 			if(event.type == sf::Event::MouseButtonReleased)
             {
-//                state.setForce(glm::distance(prevPos,glm::vec2(event.mouseButton.x,event.mouseButton.y)));
-//				state.mouseButtonDown = false;
+                state.setForce(glm::distance(prevPos,glm::vec2(event.mouseButton.x,event.mouseButton.y)));
+				state.mouseButtonDown = false;
             }
 
 			if(event.type == sf::Event::MouseMoved && state.mouseButtonDown){

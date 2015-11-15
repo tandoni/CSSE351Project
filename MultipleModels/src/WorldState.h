@@ -8,15 +8,18 @@
 class WorldState
 {
 private:
+	const float gravity = -0.005;
 	float frameTimes[NUM_TRACKED_FRAMES];
 	bool running;
     float force;
+	glm::mat4 ballTranslate;
     
 
 public:
 	
 	float currentTime;
 	
+	glm::vec3 ballPos;
 	glm::vec3 cameraPos;
 	glm::vec3 cameraLook;
 	glm::vec3 cameraUp;
@@ -27,6 +30,7 @@ public:
     glm::mat4 modelRotate;
 	glm::mat4 modelIncrementX;
     glm::mat4 modelIncrementY;
+	glm::mat4 modelIncrementNegY;
 	glm::mat4 modelTranslate;
 	glm::mat4 cameraMatrix;
 	glm::mat4 lightView;
@@ -34,6 +38,9 @@ public:
 	bool modelRotatingX;
     bool modelRotatingY;
     bool gravity_on;
+	bool modelRotatingNegY;
+	float distance = 12;
+	float traveled = 0;
 
 	float cursorScrollAmount;
 	float center[3];
@@ -85,14 +92,13 @@ public:
 		glm::vec3 min = m.getMinBound();
 		glm::vec3 dim = m.getDimension();
 		glm::vec3 toMax = max-center;
-		printf("model loaded\n");
-		printf("min [%.2f %.2f %.2f]\n", min[0], min[1], min[2]);
-		printf("max [%.2f %.2f %.2f]\n", max[0], max[1], max[2]);
-		printf("cen [%.2f %.2f %.2f]\n", center[0], center[1], center[2]);
-		printf("dim [%.2f %.2f %.2f]\n", dim[0], dim[1], dim[2]);
-		float camDistance = std::max(dim[0], dim[1]);
-		cameraPos = glm::vec3(5,1,1); //base camera pos
-        //cameraPos = glm::rotate(cameraPos, 1.5, glm::vec3(1,0,0));
+//		printf("model loaded\n");
+//		printf("min [%.2f %.2f %.2f]\n", min[0], min[1], min[2]);
+//		printf("max [%.2f %.2f %.2f]\n", max[0], max[1], max[2]);
+//		printf("cen [%.2f %.2f %.2f]\n", center[0], center[1], center[2]);
+//		printf("dim [%.2f %.2f %.2f]\n", dim[0], dim[1], dim[2]);
+//		float camDistance = std::max(dim[0], dim[1]);
+		cameraPos = glm::vec3(5,1,1);
 		cameraLook = glm::vec3(0,1,0);
 		cameraUp = glm::vec3(0,1,0);
 		
@@ -105,45 +111,16 @@ public:
 		
 		modelRotate = glm::mat4(1);
 		modelIncrementY = glm::rotate(glm::mat4(1), 0.02f, glm::vec3(0,1,0));
+		modelIncrementNegY = glm::rotate(glm::mat4(1), 0.02f, glm::vec3(0, -1, 0));
         modelIncrementX = glm::rotate(glm::mat4(1), 0.02f, glm::vec3(1,0,0));
 		modelTranslate = glm::translate(glm::mat4(1), -m.getCentroid());
+		ballTranslate = glm::translate(glm::mat4(1), -ball.getCentroid());
+		ballPos = -ball.getCentroid();
 		
 		lightRotating = false;
 		modelRotatingY = false;
-        modelRotatingX=false;
-        
-//        glm::vec3 center2 = n.getCentroid();
-//        glm::vec3 max2 = n.getMaxBound();
-//        glm::vec3 min2 = n.getMinBound();
-//        glm::vec3 dim2 = n.getDimension();
-//        glm::vec3 toMax2 = max2-center2;
-//        printf("model loaded\n");
-//        printf("min [%.2f %.2f %.2f]\n", min2[0], min2[1], min2[2]);
-//        printf("max [%.2f %.2f %.2f]\n", max2[0], max2[1], max2[2]);
-//        printf("cen [%.2f %.2f %.2f]\n", center2[0], center2[1], center2[2]);
-//        printf("dim [%.2f %.2f %.2f]\n", dim2[0], dim2[1], dim2[2]);
-//        float camDistance2 = std::max(dim2[0], dim2[1]);
-//        cameraPos = glm::vec3(0,(center2+(toMax2*5.0f))[1],camDistance2);
-//        cameraLook = glm::vec3(0,0,0);
-//        cameraUp = glm::vec3(0,1,0);
-//        
-//        lightPos = glm::vec4((center2+(toMax2*2.0f)), 1);
-//        lightPos[1] = (center2+(toMax2*6.0f))[1];
-//        lightIntensity = glm::vec3(1,1,1);
-//        
-//        lightRotate = glm::mat4(1);
-//        lightIncrement = glm::rotate(glm::mat4(1), -0.05f, glm::vec3(0,1,0));
-//        
-//        modelRotate = glm::mat4(1);
-//        modelIncrement = glm::rotate(glm::mat4(1), 0.02f, glm::vec3(0,1,0));
-//        modelTranslate = glm::translate(glm::mat4(1), -n.getCentroid());
-        
-
-        
-//
-//        modelRotate = glm::mat4(1);
-//        modelIncrement = glm::rotate(glm::mat4(1), 0.02f, glm::vec3(0,1,0));
-//        modelTranslate = glm::translate(glm::mat4(1), -model.getCentroid());
+        modelRotatingX = false;
+		modelRotatingNegY = false;
 	}
 	
 	void updateFrameTime(float timeAsSeconds)
@@ -183,25 +160,31 @@ public:
 	{
 		float elapsed = t - this->currentTime;
 		this->updateFrameTime(elapsed);
-		
 		//spin light
 		if(lightRotating)
 			lightRotate = lightIncrement * lightRotate;
 		
 		//spin model
 		if(modelRotatingY)
-            modelRotate = modelIncrementY * modelRotate; //glm::rotate(glm::mat4(1.0f), ROT_SENSITIVITY/2, glm::vec3(1,0,0));
+            modelRotate = modelIncrementY * modelRotate; 
+
+		if (modelRotatingNegY)
+			modelRotate = modelIncrementNegY * modelRotate; 
         
         if(modelRotatingX)
             modelRotate=modelIncrementX*modelRotate;
         
-        if(gravity_on)
-        {
-            this->updateYTranslate();
-        }
-        
-        this->updateZTranslate();
-		
+		//printf("%f %f %f\n", -models[1].getCentroid().x, -models[1].getCentroid().y, -models[1].getCentroid().z);
+		glm::vec3 ballPosDiff = glm::abs(ballPos + models[1].getCentroid());
+		if (ballPosDiff.x < distance && ballPosDiff.y>-0.3){
+			traveled += force;
+			this->updateBallTranslate();
+			if (force>0)
+				this->updateCamera();
+			printf("Travled: %f\n", this->traveled);
+			printf("ballPos: %f %f %f\n", ballPos.x, ballPos.y, ballPos.z);
+		}
+
 		glm::vec3 currentLightPos = glm::vec3(lightRotate*lightPos);
 		lightView = glm::lookAt(currentLightPos, cameraLook, cameraUp);
 		
@@ -240,9 +223,14 @@ public:
 	glm::vec4 getCameraPos() const
     { return glm::vec4(this->cameraPos, 1); }
 	
-	void toggleModelRotateY()
-	{ modelRotatingY = !modelRotatingY; }
-    
+	void toggleModelRotateY(){ 
+		modelRotatingY = !modelRotatingY; 
+	}
+
+	void toggleModelRotateNegY(){
+		modelRotatingNegY = !modelRotatingNegY;
+	}
+
     void toggleModelRotateX()
     { modelRotatingX = !modelRotatingX; }
 	
@@ -259,24 +247,33 @@ public:
 	}
     
     void setForce(float force)
-    { this->force=force;}
+	{
+		this->force = 2*force / RESOLUTION;
+	}
     
-    void updateZTranslate()
+    void updateBallTranslate()
     {
-        #define Z_SENSTIVITY 0.02f
-        
-        float tforce=this->force;
-        
-        tforce/=RESOLUTION;
-        
-        modelTranslate*=glm::translate(glm::mat4(1.0f),glm::vec3(0,0,-glm::clamp(tforce,0.0f,1.0f)));
+		if (force > 0)
+		{
+			ballTranslate *= glm::translate(glm::mat4(1.0f), glm::vec3(-glm::clamp(force, 0.0f, 1.0f), gravity, 0));
+			ballPos += glm::vec3(-glm::clamp(force, 0.0f, 1.0f), gravity, 0);
+		}
     }
+	void updateCamera()
+	{	
+		glm::vec3 tranlateVec = glm::vec3(-glm::clamp(force, 0.0f, 1.0f), gravity, 0);
+		cameraPos += tranlateVec;
+		cameraLook += tranlateVec;
+	}
+
+	glm::mat4 getBallTranslate() const
+	{	return ballTranslate;}
     
     void updateYTranslate()
     {
         #define Z_SENSTIVITY 0.02f
         
-        modelTranslate*=glm::translate(glm::mat4(1.0f),glm::vec3(0,-0.2,0));
+		ballTranslate *= glm::translate(glm::mat4(1.0f), glm::vec3(0, gravity, 0));
     }
 };
 

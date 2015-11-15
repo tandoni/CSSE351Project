@@ -41,18 +41,16 @@ public:
     }
     
     void display(WorldState & state){
-//        glViewport(0, 0, mapSizeX, mapSizeY);
-        
-
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        
+		glViewport(0, 0, state.currentRes[0], state.currentRes[1]);
+
         //draw
-        for(int i=0;i<state.getNumModels();i++){
-            glUseProgram(shaderProg[0]);
-            uploadUniforms(shaderProg[0], state);
-            state.getModel(i).draw(shaderProg[0]);
+        for(int i = 0; i <state.getNumModels();i++){
+            glUseProgram(shaderProg[i]);
+            uploadUniforms(shaderProg[i], state, i);
+            state.getModel(i).draw(shaderProg[i]);
         }
         
         glUseProgram(0);
@@ -79,20 +77,22 @@ private:
     float fov;
     
     void setupShader(){
-        char const * cannonBallVertPath = "resources/reflectance.vert";
-        char const * cannonBallFragPath = "resources/reflectance.frag";
-        shaderProg[0] = ShaderManager::shaderFromFile(&cannonBallVertPath, &cannonBallFragPath, 1, 1);
+        char const * terrianVertPath = "shaders/reflectance.vert";
+		char const * terrianFragPath = "shaders/reflectance.frag";
+		shaderProg[0] = ShaderManager::shaderFromFile(&terrianVertPath, &terrianFragPath, 1, 1);
         
-//        char const * cannonVertPath = "resources/cannon.vert";
-//        char const * cannonFragPath = "resources/cannon.frag";
-//        shaderProg[1] = ShaderManager::shaderFromFile(&cannonVertPath, &cannonFragPath, 1, 1);
+        char const * cannonVertPath = "shaders/reflectanceCannon.vert";
+        char const * cannonFragPath = "shaders/reflectanceCannon.frag";
+        shaderProg[1] = ShaderManager::shaderFromFile(&cannonVertPath, &cannonFragPath, 1, 1);
+
+		char const * cannonBallVertPath = "shaders/reflectanceBall.vert";
+		char const * cannonBallFragPath = "shaders/reflectanceBall.frag";
+		shaderProg[2] = ShaderManager::shaderFromFile(&cannonBallVertPath, &cannonBallFragPath, 1, 1);
         
         checkGLError("shader");
     }
     
-    void uploadUniforms(GLuint shaderId, WorldState const & state)
-    {
-		for (int i = 0; i < state.getNumModels(); i++){
+    void uploadUniforms(GLuint shaderId, WorldState const & state, int i){
 			if (i == 0){
 				glm::vec3 dim = state.getModel(i).getDimension();
 				float maxDim = std::max(dim[0], std::max(dim[1], dim[2]));
@@ -100,9 +100,14 @@ private:
 				_far = maxDim*3.0f;
 				fov = 0.9f;
 			}
+
+            glm::mat4 mT = state.getModelTranslate();
+
+			if (i == 2){
+				mT = state.getBallTranslate();
+			}
             
             glm::mat4 P = glm::perspective(1.0f, fov, _near, _far);
-            glm::mat4 mT = state.getModelTranslate();
             glm::mat4 mR = state.getModelRotate();
             glm::mat4 C = state.getCameraMatrix();
             glm::mat4 M = C*mR*mT;
@@ -152,7 +157,6 @@ private:
             //		glUniform2f(glGetUniformLocation(shaderId, "lastClickPos"), state.lastClickPos[0], state.lastClickPos[1]);
             //		glUniform2f(glGetUniformLocation(shaderId, "lastFrameDragPos"), state.lastFrameDragPos[0], state.lastFrameDragPos[1]);
             //		glUniform1i(glGetUniformLocation(shaderId, "mouseButtonDown"), state.mouseButtonDown);
-        }
     }
     
 };
