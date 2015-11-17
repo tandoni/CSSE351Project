@@ -1,4 +1,4 @@
-﻿Build started 11/16/2015 10:38:32 PM.
+﻿Build started 11/16/2015 11:50:39 PM.
      1>Project "C:\Users\loki\Desktop\GitProjects\CSSE351Project\MultipleModels\ConsoleApplication1.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /Od /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt src\main.cpp
@@ -18,7 +18,7 @@
      1>c:\users\loki\desktop\gitprojects\csse351project\multiplemodels\src\Model.h(176): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
      1>c:\users\loki\desktop\gitprojects\csse351project\multiplemodels\src\Model.h(265): warning C4267: 'argument' : conversion from 'size_t' to 'GLsizei', possible loss of data
      1>c:\users\loki\desktop\gitprojects\csse351project\multiplemodels\src\WorldState.h(11): warning C4305: 'initializing' : truncation from 'double' to 'const float'
-     1>c:\users\loki\desktop\gitprojects\csse351project\multiplemodels\src\WorldState.h(246): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\loki\desktop\gitprojects\csse351project\multiplemodels\src\WorldState.h(263): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
      1>src\main.cpp(158): warning C4305: '+=' : truncation from 'double' to 'float'
      1>src\main.cpp(159): warning C4305: '+=' : truncation from 'double' to 'float'
      1>src\main.cpp(162): warning C4305: '-=' : truncation from 'double' to 'float'
@@ -51,4 +51,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.82
+Time Elapsed 00:00:01.88

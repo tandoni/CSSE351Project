@@ -14,6 +14,7 @@ private:
     float force;
 	glm::vec2 direction;
 	glm::mat4 ballTranslate;
+	glm::mat4 targetTranslate;
     
 
 public:
@@ -28,6 +29,7 @@ public:
 	glm::vec3 lightIntensity;
 	glm::mat4 lightRotate;
 	glm::mat4 lightIncrement;
+	glm::mat4 lightTemp;
     glm::mat4 modelRotate;
 	glm::mat4 modelIncrementX;
     glm::mat4 modelIncrementY;
@@ -40,7 +42,7 @@ public:
     bool modelRotatingY;
     bool gravity_on;
 	bool modelRotatingNegY;
-	float distance = 12;
+	float distance = 6;
 	float traveled = 0;
 
 	float cursorScrollAmount;
@@ -66,27 +68,33 @@ public:
         Model m;
         Model n;
         Model ball;
+		Model t;
 		running = true;
         force=0.0f;
         gravity_on=false;
 		m = Model();
-		m.init("resources/finalCannon.obj");
+		m.init("resources3/finalCannon.obj");
 		m.setupAttributeBuffers();
         
         
         //        //MODEL 2 LOADING CODE **************************************
         ball = Model();
-        ball.init("resources/finalBall.obj");
+        ball.init("resources3/finalBall.obj");
         ball.setupAttributeBuffers();
         
         
         n = Model();
-        n.init("resources/finalGround.obj");
+        n.init("resources3/finalGround.obj");
         n.setupAttributeBuffers();
+
+		t = Model();
+		t.init("resources3/target.obj");
+		t.setupAttributeBuffers();
         
 		models.push_back(n);
         models.push_back(m);
         models.push_back(ball);
+		models.push_back(t);
 		
 		glm::vec3 center = -m.getCentroid();
         glm::vec3 max = m.getMaxBound();
@@ -103,12 +111,17 @@ public:
 		cameraLook = glm::vec3(-1,.5,0);
 		cameraUp = glm::vec3(0,1,0);
 		
-		lightPos = glm::vec4((center+(toMax*2.0f)), 1);
-		lightPos[1] = (center+(toMax*6.0f))[1];
+		lightPos = glm::vec4((center + (toMax*2.0f)), 1);
+		lightPos[1] = (center + (toMax*6.0f))[1];
 		lightIntensity = glm::vec3(1,1,1);
 		
+		printf("%f %f %f %f\n", lightPos.x, lightPos.y, lightPos.z, lightPos.w);
+
 		lightRotate = glm::mat4(1);
 		lightIncrement = glm::rotate(glm::mat4(1), -0.05f, glm::vec3(0,1,0));
+		lightTemp = glm::rotate(glm::mat4(1), -0.1f, glm::vec3(0, 1, 0));
+
+		lightRotate = lightIncrement * lightRotate;
 		
 		modelRotate = glm::mat4(1);
 		modelIncrementY = glm::rotate(glm::mat4(1), 0.02f, glm::vec3(0,1,0));
@@ -117,6 +130,8 @@ public:
 		modelTranslate = glm::translate(glm::mat4(1), -m.getCentroid());
 		ballTranslate = glm::translate(glm::mat4(1), -ball.getCentroid());
 		ballTranslate *= glm::translate(glm::mat4(1.0f), glm::vec3(-.1, .1, 0));
+		targetTranslate = glm::translate(glm::mat4(1.0f), glm::vec3(-8, 1.25, 0));
+		targetTranslate *= glm::rotate(glm::mat4(1), -1.5f, glm::vec3(0, 0, 1));
 		ballPos = -ball.getCentroid();
 		
 		lightRotating = false;
@@ -165,6 +180,8 @@ public:
 		//spin light
 		if(lightRotating)
 			lightRotate = lightIncrement * lightRotate;
+
+//		printf("%f %f %f %f\n", lightPos.x, lightPos.y, lightPos.z, lightPos.w);
 		
 		//spin model
 		if(modelRotatingY)
@@ -250,9 +267,14 @@ public:
     
     void setForce(float force)
 	{ this->force = 2*force / RESOLUTION;}
-	void setDirection(glm::vec2 dir)
-	{this->direction = dir;
-	printf("direction: %f %f\n", direction.x, direction.y);
+
+	void setDirection(glm::vec2 dir){
+		this->direction = dir;
+		printf("direction: %f %f\n", direction.x, direction.y);
+	}
+
+	glm::mat4 getTargetTranslate() const{
+		return targetTranslate;
 	}
     
     void updateBallTranslate()

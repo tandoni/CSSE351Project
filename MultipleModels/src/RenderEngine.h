@@ -59,7 +59,7 @@ public:
     
 private:
     bool initialized;
-    GLuint shaderProg[3];
+    GLuint shaderProg[4];
     GLuint vertexArray;
     GLuint quadVertexArray;
     GLuint lightArray;
@@ -88,6 +88,10 @@ private:
 		char const * cannonBallVertPath = "shaders/reflectanceBall.vert";
 		char const * cannonBallFragPath = "shaders/reflectanceBall.frag";
 		shaderProg[2] = ShaderManager::shaderFromFile(&cannonBallVertPath, &cannonBallFragPath, 1, 1);
+
+		char const * targetVertPath = "shaders/reflectanceBall.vert";
+		char const * targetFragPath = "shaders/reflectanceBall.frag";
+		shaderProg[3] = ShaderManager::shaderFromFile(&targetVertPath, &targetFragPath, 1, 1);
         
         checkGLError("shader");
     }
@@ -105,6 +109,10 @@ private:
 
 			if (i == 2){
 				mT = state.getBallTranslate();
+			}
+
+			if (i == 3){
+				mT = state.getTargetTranslate();
 			}
             
             glm::mat4 P = glm::perspective(1.0f, fov, _near, _far);
@@ -126,9 +134,6 @@ private:
             GLfloat distScale = 1.0f / (glm::length(Lr*lightPos - camPos) / maxDis);
             glPointSize(glm::mix(1.0f, 10.0f, distScale));
             
-            //printf("cam %f %f %f\n", camPos[0], camPos[1], camPos[2]);
-            //printf("light %f %f %f\n", lightPos[0], lightPos[1], lightPos[2]);
-            
             glUniformMatrix4fv(glGetUniformLocation(shaderId, "P"), 1, GL_FALSE, &P[0][0]);
             glUniformMatrix4fv(glGetUniformLocation(shaderId, "Lp"), 1, GL_FALSE, &Lp[0][0]);
             glUniformMatrix4fv(glGetUniformLocation(shaderId, "C"), 1, GL_FALSE, &C[0][0]);
@@ -140,23 +145,6 @@ private:
             glUniformMatrix4fv(glGetUniformLocation(shaderId, "Lv"), 1, GL_FALSE, &Lv[0][0]);
             glUniform4fv(glGetUniformLocation(shaderId, "lightPos"), 1, &lightPos[0]);
             glUniform4fv(glGetUniformLocation(shaderId, "camPos"), 1, &camPos[0]);
-//            if (shaderId == 0)
-//                glUniform3fv(glGetUniformLocation(0, "velocity"), 1, &velocity[0]);
-            
-            //		glUniform1f(glGetUniformLocation(shaderId, "elapsedTime"), state.currentTime);
-            //		glUniform1f(glGetUniformLocation(shaderId, "near"), _near);
-            //		glUniform1f(glGetUniformLocation(shaderId, "far"), _far);
-            //		glUniform1f(glGetUniformLocation(shaderId, "fov"), fov);
-            //		glUniform1f(glGetUniformLocation(shaderId, "cursorScrollAmount"), state.cursorScrollAmount);
-			//      glUniform2f(glGetUniformLocation(shaderId, "resolution"), state.currentRes[0], state.currentRes[1]);
-            //		glUniform3f(glGetUniformLocation(shaderId, "modelCenter"),  state.center[0], state.center[1], state.center[2]);
-            //		glUniform3f(glGetUniformLocation(shaderId, "lookAtPos"),  state.cameraLook[0], state.cameraLook[1], state.cameraLook[2]);
-            //		glUniform3f(glGetUniformLocation(shaderId, "cameraUp"),  state.cameraUp[0], state.cameraUp[1], state.cameraUp[2]);
-            //		glUniform2f(glGetUniformLocation(shaderId, "cursorAbsolutePos"), state.cursorAbsolutePos[0], state.cursorAbsolutePos[1]);
-            //		glUniform2f(glGetUniformLocation(shaderId, "cursorDragAmount"), state.cursorDragAmount[0], state.cursorDragAmount[1]);
-            //		glUniform2f(glGetUniformLocation(shaderId, "lastClickPos"), state.lastClickPos[0], state.lastClickPos[1]);
-            //		glUniform2f(glGetUniformLocation(shaderId, "lastFrameDragPos"), state.lastFrameDragPos[0], state.lastFrameDragPos[1]);
-            //		glUniform1i(glGetUniformLocation(shaderId, "mouseButtonDown"), state.mouseButtonDown);
     }
     
 };
