@@ -89,8 +89,8 @@ private:
 		char const * cannonBallFragPath = "shaders/reflectanceBall.frag";
 		shaderProg[2] = ShaderManager::shaderFromFile(&cannonBallVertPath, &cannonBallFragPath, 1, 1);
 
-		char const * targetVertPath = "shaders/reflectanceBall.vert";
-		char const * targetFragPath = "shaders/reflectanceBall.frag";
+		char const * targetVertPath = "shaders/reflectanceTarget.vert";
+		char const * targetFragPath = "shaders/reflectanceTarget.frag";
 		shaderProg[3] = ShaderManager::shaderFromFile(&targetVertPath, &targetFragPath, 1, 1);
         
         checkGLError("shader");
@@ -100,7 +100,7 @@ private:
 			if (i == 0){
 				glm::vec3 dim = state.getModel(i).getDimension();
 				float maxDim = std::max(dim[0], std::max(dim[1], dim[2]));
-				_near = maxDim*0.1f;
+				_near = maxDim*0.01f;
 				_far = maxDim*3.0f;
 				fov = 0.9f;
 			}

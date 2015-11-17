@@ -107,7 +107,7 @@ public:
 //		printf("cen [%.2f %.2f %.2f]\n", center[0], center[1], center[2]);
 //		printf("dim [%.2f %.2f %.2f]\n", dim[0], dim[1], dim[2]);
 //		float camDistance = std::max(dim[0], dim[1]);
-		cameraPos = glm::vec3(2.2,.5,0);
+		cameraPos = glm::vec3(2.2,.8,0);
 		cameraLook = glm::vec3(-1,.5,0);
 		cameraUp = glm::vec3(0,1,0);
 		
@@ -119,9 +119,9 @@ public:
 
 		lightRotate = glm::mat4(1);
 		lightIncrement = glm::rotate(glm::mat4(1), -0.05f, glm::vec3(0,1,0));
-		lightTemp = glm::rotate(glm::mat4(1), -0.1f, glm::vec3(0, 1, 0));
+		lightTemp = glm::rotate(glm::mat4(1), -1.0f, glm::vec3(0, 1, 0));
 
-		lightRotate = lightIncrement * lightRotate;
+		lightRotate = lightTemp * lightRotate;
 		
 		modelRotate = glm::mat4(1);
 		modelIncrementY = glm::rotate(glm::mat4(1), 0.02f, glm::vec3(0,1,0));
