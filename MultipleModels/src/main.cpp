@@ -185,17 +185,12 @@ private:
 
 			if(event.type == sf::Event::MouseButtonPressed){
                 prevPos=glm::vec2(event.mouseButton.x,event.mouseButton.y);
-                
-//				state.lastClickPos[0] = event.mouseButton.x;
-//				state.lastClickPos[1] = (state.currentRes[1]-event.mouseButton.y);
-//				state.lastFrameDragPos[0] = event.mouseButton.x;
-//				state.lastFrameDragPos[1] = (state.currentRes[1]-event.mouseButton.y);
-//				state.mouseButtonDown = true;
 			}
 
 			if(event.type == sf::Event::MouseButtonReleased)
             {
                 state.setForce(glm::distance(prevPos,glm::vec2(event.mouseButton.x,event.mouseButton.y)));
+				state.setDirection(prevPos);
 				state.mouseButtonDown = false;
             }
 

@@ -8,10 +8,11 @@
 class WorldState
 {
 private:
-	const float gravity = -0.005;
+	const float gravity = -0.001;
 	float frameTimes[NUM_TRACKED_FRAMES];
 	bool running;
     float force;
+	glm::vec2 direction;
 	glm::mat4 ballTranslate;
     
 
@@ -98,8 +99,8 @@ public:
 //		printf("cen [%.2f %.2f %.2f]\n", center[0], center[1], center[2]);
 //		printf("dim [%.2f %.2f %.2f]\n", dim[0], dim[1], dim[2]);
 //		float camDistance = std::max(dim[0], dim[1]);
-		cameraPos = glm::vec3(5,1,1);
-		cameraLook = glm::vec3(0,1,0);
+		cameraPos = glm::vec3(2.2,.5,0);
+		cameraLook = glm::vec3(-1,.5,0);
 		cameraUp = glm::vec3(0,1,0);
 		
 		lightPos = glm::vec4((center+(toMax*2.0f)), 1);
@@ -115,6 +116,7 @@ public:
         modelIncrementX = glm::rotate(glm::mat4(1), 0.02f, glm::vec3(1,0,0));
 		modelTranslate = glm::translate(glm::mat4(1), -m.getCentroid());
 		ballTranslate = glm::translate(glm::mat4(1), -ball.getCentroid());
+		ballTranslate *= glm::translate(glm::mat4(1.0f), glm::vec3(-.1, .1, 0));
 		ballPos = -ball.getCentroid();
 		
 		lightRotating = false;
@@ -181,8 +183,8 @@ public:
 			this->updateBallTranslate();
 			if (force>0)
 				this->updateCamera();
-			printf("Travled: %f\n", this->traveled);
-			printf("ballPos: %f %f %f\n", ballPos.x, ballPos.y, ballPos.z);
+			//printf("Travled: %f\n", this->traveled);
+			//printf("ballPos: %f %f %f\n", ballPos.x, ballPos.y, ballPos.z);
 		}
 
 		glm::vec3 currentLightPos = glm::vec3(lightRotate*lightPos);
@@ -247,21 +249,23 @@ public:
 	}
     
     void setForce(float force)
-	{
-		this->force = 2*force / RESOLUTION;
+	{ this->force = 2*force / RESOLUTION;}
+	void setDirection(glm::vec2 dir)
+	{this->direction = dir;
+	printf("direction: %f %f\n", direction.x, direction.y);
 	}
     
     void updateBallTranslate()
     {
 		if (force > 0)
 		{
-			ballTranslate *= glm::translate(glm::mat4(1.0f), glm::vec3(-glm::clamp(force, 0.0f, 1.0f), gravity, 0));
+			ballTranslate *= glm::translate(glm::mat4(1.0f), glm::vec3(-glm::clamp(force, 0.1f, 1.0f), gravity, 0));
 			ballPos += glm::vec3(-glm::clamp(force, 0.0f, 1.0f), gravity, 0);
 		}
     }
 	void updateCamera()
 	{	
-		glm::vec3 tranlateVec = glm::vec3(-glm::clamp(force, 0.0f, 1.0f), gravity, 0);
+		glm::vec3 tranlateVec = glm::vec3(-glm::clamp(force, 0.1f, 1.0f), gravity, 0);
 		cameraPos += tranlateVec;
 		cameraLook += tranlateVec;
 	}
