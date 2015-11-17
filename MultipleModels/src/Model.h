@@ -77,7 +77,7 @@ public:
 		for(size_t i=0; i<loader.materialCount; i++)
 		{
 			Material m;
-			for(size_t c=0; c<3; c++) {
+			for(int c=0; c<3; c++) {
 				m.Ka[c] = loader.materialList[i]->amb[c];
 				m.Kd[c] = loader.materialList[i]->diff[c];
 				m.Ks[c] = loader.materialList[i]->spec[c];

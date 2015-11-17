@@ -1,6 +1,6 @@
 # Blender v2.76 (sub 0) OBJ File: ''
 # www.blender.org
-mtllib finalGroundobj.mtl
+mtllib finalGround.mtl
 o Landscape
 v -8.000000 -0.002222 8.000000
 v -7.746032 -0.000809 8.000000

@@ -73,22 +73,22 @@ public:
         force=0.0f;
         gravity_on=false;
 		m = Model();
-		m.init("resources3/finalCannon.obj");
+		m.init("resources/finalCannon.obj");
 		m.setupAttributeBuffers();
         
         
         //        //MODEL 2 LOADING CODE **************************************
         ball = Model();
-        ball.init("resources3/finalBall.obj");
+        ball.init("resources/finalBall.obj");
         ball.setupAttributeBuffers();
         
         
         n = Model();
-        n.init("resources3/finalGround.obj");
+        n.init("resources/finalGround.obj");
         n.setupAttributeBuffers();
 
 		t = Model();
-		t.init("resources3/target.obj");
+		t.init("resources/target.obj");
 		t.setupAttributeBuffers();
         
 		models.push_back(n);

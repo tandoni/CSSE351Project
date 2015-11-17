@@ -36,6 +36,8 @@ vec4 reflectance(in vec3 pos, in vec3 norm, in vec3 colorIn, in float visibility
 	vec4 ks = Ks;
 
 	lp = C*Lr*lp;
+    lp = C * vec4(-40, 5, -10, 1);
+
 	p = M*p;
 	n = vec4(N*n.xyz, 0);
 

@@ -77,20 +77,20 @@ private:
     float fov;
     
     void setupShader(){
-        char const * terrianVertPath = "shaders/reflectance.vert";
-		char const * terrianFragPath = "shaders/reflectance.frag";
+        char const * terrianVertPath = "resources/reflectance.vert";
+		char const * terrianFragPath = "resources/reflectance.frag";
 		shaderProg[0] = ShaderManager::shaderFromFile(&terrianVertPath, &terrianFragPath, 1, 1);
         
-        char const * cannonVertPath = "shaders/reflectanceCannon.vert";
-        char const * cannonFragPath = "shaders/reflectanceCannon.frag";
+        char const * cannonVertPath = "resources/reflectanceCannon.vert";
+        char const * cannonFragPath = "resources/reflectanceCannon.frag";
         shaderProg[1] = ShaderManager::shaderFromFile(&cannonVertPath, &cannonFragPath, 1, 1);
 
-		char const * cannonBallVertPath = "shaders/reflectanceBall.vert";
-		char const * cannonBallFragPath = "shaders/reflectanceBall.frag";
+		char const * cannonBallVertPath = "resources/reflectanceBall.vert";
+		char const * cannonBallFragPath = "resources/reflectanceBall.frag";
 		shaderProg[2] = ShaderManager::shaderFromFile(&cannonBallVertPath, &cannonBallFragPath, 1, 1);
 
-		char const * targetVertPath = "shaders/reflectanceTarget.vert";
-		char const * targetFragPath = "shaders/reflectanceTarget.frag";
+		char const * targetVertPath = "resources/reflectanceTarget.vert";
+		char const * targetFragPath = "resources/reflectanceTarget.frag";
 		shaderProg[3] = ShaderManager::shaderFromFile(&targetVertPath, &targetFragPath, 1, 1);
         
         checkGLError("shader");
