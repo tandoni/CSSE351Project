@@ -84,7 +84,7 @@ public:
         
         
         n = Model();
-        n.init("resources3/finalGround.obj");
+        n.init("resources3/terrain.obj");
         n.setupAttributeBuffers();
 
 		t = Model();
