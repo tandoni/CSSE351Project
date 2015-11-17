@@ -116,6 +116,7 @@ private:
 	glm::ivec2 previousPos;
     glm::vec2 prevPos;
 	bool buttonDown[3];
+	glm::vec3 camInit = state.getCamPos();
 
 	void handleEvents(WorldState & state, RenderEngine & render)
 	{
@@ -182,6 +183,18 @@ private:
             if((event.type == sf::Event::TextEntered) && (event.text.unicode == 'g')){
                 state.toggleGravity();
             }
+
+			if ((event.type == sf::Event::TextEntered) && (event.text.unicode == 'r')){
+				if (state.getGravity() == true){
+					state.toggleGravity();
+				}
+
+				state.setForce(0);
+				state.cameraPos.x = camInit.x;
+				state.cameraPos.y = camInit.y;
+				state.cameraPos.z = camInit.z;
+				prevPos = glm::vec2(0);
+			}
 
 			if(event.type == sf::Event::MouseButtonPressed){
                 prevPos=glm::vec2(event.mouseButton.x,event.mouseButton.y);

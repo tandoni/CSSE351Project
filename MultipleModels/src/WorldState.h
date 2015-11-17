@@ -42,7 +42,7 @@ public:
     bool modelRotatingY;
     bool gravity_on;
 	bool modelRotatingNegY;
-	float distance = 6;
+	float distance = 7;
 	float traveled = 0;
 
 	float cursorScrollAmount;
@@ -281,8 +281,11 @@ public:
     {
 		if (force > 0)
 		{
-			ballTranslate *= glm::translate(glm::mat4(1.0f), glm::vec3(-glm::clamp(force, 0.1f, 1.0f), gravity, 0));
-			ballPos += glm::vec3(-glm::clamp(force, 0.0f, 1.0f), gravity, 0);
+//			ballTranslate *= glm::translate(glm::mat4(1.0f), glm::vec3(-glm::clamp(force, 0.1f, 1.0f), gravity, 0));
+//			ballPos += glm::vec3(-glm::clamp(force, 0.0f, 1.0f), gravity, 0);
+
+			ballTranslate *= glm::translate(glm::mat4(1.0f), glm::vec3(-glm::clamp(force, 0.1f, 1.0f), 0, 0));
+			ballPos += glm::vec3(-glm::clamp(force, 0.0f, 1.0f), 0, 0);
 		}
     }
 	void updateCamera()
@@ -294,6 +297,14 @@ public:
 
 	glm::mat4 getBallTranslate() const
 	{	return ballTranslate;}
+
+	glm::vec3 getCamPos(){
+		return cameraPos;
+	}
+
+	bool getGravity(){
+		return gravity;
+	}
     
     void updateYTranslate()
     {
