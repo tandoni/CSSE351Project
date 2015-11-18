@@ -8,10 +8,10 @@
 class WorldState
 {
 private:
-	const float gravity = -0.001;
 	float frameTimes[NUM_TRACKED_FRAMES];
 	bool running;
     float force;
+	float gravity;
 	glm::vec2 direction;
 	glm::mat4 ballTranslate;
 	glm::mat4 targetTranslate;
@@ -40,10 +40,7 @@ public:
 	bool lightRotating;
 	bool modelRotatingX;
     bool modelRotatingY;
-    bool gravity_on;
 	bool modelRotatingNegY;
-	float distance = 7;
-	float traveled = 0;
 
 	float cursorScrollAmount;
 	float center[3];
@@ -58,9 +55,6 @@ public:
 
 
 public:
-	WorldState()
-	{ }
-
 	void init()
 	{
 		for(size_t i=0; i<NUM_TRACKED_FRAMES; i++)
@@ -71,13 +65,11 @@ public:
 		Model t;
 		running = true;
         force=0.0f;
-        gravity_on=false;
+		gravity = 0.0f;
 		m = Model();
 		m.init("resources3/finalCannon.obj");
 		m.setupAttributeBuffers();
         
-        
-        //        //MODEL 2 LOADING CODE **************************************
         ball = Model();
         ball.init("resources3/finalBall.obj");
         ball.setupAttributeBuffers();
@@ -146,7 +138,6 @@ public:
 			frameTimes[i] = frameTimes[i-1];
 		frameTimes[0] = timeAsSeconds;
 	}
-	
 	void printFPS() const
 	{
 		float sum = 0.0f;
@@ -160,16 +151,12 @@ public:
 		fps = 1.0f / avg;
 		printf("fps %f\n", fps);
 	}
-	
 	Model const & getModel(int i) const
 	{ return this->models[i]; }
-	
 	void setRunning(bool r)
 	{ running = r; }
-
 	bool isRunning() const
 	{ return running; }
-
 	float getCurrentTime() const
 	{ return this->currentTime; }
 
@@ -180,8 +167,6 @@ public:
 		//spin light
 		if(lightRotating)
 			lightRotate = lightIncrement * lightRotate;
-
-//		printf("%f %f %f %f\n", lightPos.x, lightPos.y, lightPos.z, lightPos.w);
 		
 		//spin model
 		if(modelRotatingY)
@@ -195,13 +180,10 @@ public:
         
 		//printf("%f %f %f\n", -models[1].getCentroid().x, -models[1].getCentroid().y, -models[1].getCentroid().z);
 		glm::vec3 ballPosDiff = glm::abs(ballPos + models[1].getCentroid());
-		if (ballPosDiff.x < distance && ballPosDiff.y>-0.3){
-			traveled += force;
+		if (force>0 && insideRange(ballPosDiff.x, 0, 8) && insideRange(ballPosDiff.y, 0, 8) && insideRange(ballPosDiff.z, -3, 3)){
 			this->updateBallTranslate();
-			if (force>0)
-				this->updateCamera();
-			//printf("Travled: %f\n", this->traveled);
-			//printf("ballPos: %f %f %f\n", ballPos.x, ballPos.y, ballPos.z);
+			this->updateCamera();
+			printf("ballPos: %f %f %f\n", ballPos.x, ballPos.y, ballPos.z);
 		}
 
 		glm::vec3 currentLightPos = glm::vec3(lightRotate*lightPos);
@@ -209,55 +191,44 @@ public:
 		
 		this->currentTime = t;
 	}
+
+	bool insideRange(float val,float low,float high)
+	{
+		return (val <= high&&val >= low);
+	}
     
     size_t getNumModels() const
     {
         return this->models.size();
     }
-	
 	Model & getModel(int i)
 	{ return this->models[i]; }
-	
 	glm::mat4 getModelTranslate() const
 	{ return modelTranslate; }
-	
 	glm::mat4 getModelRotate() const
 	{ return modelRotate; }
-	
 	glm::mat4 getLightRotate() const
 	{ return lightRotate; }
-	
 	glm::vec4 getLightPos() const
 	{ return this->lightPos; }
-	
 	glm::vec3 getLightIntensity() const
 	{ return this->lightIntensity; }
-	
 	glm::mat4 getCameraMatrix() const
 	{ return glm::lookAt(cameraPos, cameraLook, cameraUp); }
-	
 	glm::mat4 getLightViewMatrix() const
 	{ return lightView; }
-	
 	glm::vec4 getCameraPos() const
     { return glm::vec4(this->cameraPos, 1); }
-	
 	void toggleModelRotateY(){ 
 		modelRotatingY = !modelRotatingY; 
 	}
-
 	void toggleModelRotateNegY(){
 		modelRotatingNegY = !modelRotatingNegY;
 	}
-
     void toggleModelRotateX()
     { modelRotatingX = !modelRotatingX; }
-	
 	void toggleLightRotate()
 	{ lightRotating = !lightRotating; }
-    
-    void toggleGravity()
-    {gravity_on=!gravity_on;}
 	void zoomCamera(int delta)
 	{
 		float d = pow(0.95, delta);
@@ -266,10 +237,14 @@ public:
 	}
     
     void setForce(float force)
-	{ this->force = 2*force / RESOLUTION;}
+	{
+		this->force = 2*force / RESOLUTION;
+		this->gravity = this->force*0.05;
+	}
 
 	void setDirection(glm::vec2 dir){
-		this->direction = dir;
+		this->direction.x = dir.x/currentRes[0];
+		this->direction.y = dir.y / currentRes[1];
 		printf("direction: %f %f\n", direction.x, direction.y);
 	}
 
@@ -284,13 +259,14 @@ public:
 //			ballTranslate *= glm::translate(glm::mat4(1.0f), glm::vec3(-glm::clamp(force, 0.1f, 1.0f), gravity, 0));
 //			ballPos += glm::vec3(-glm::clamp(force, 0.0f, 1.0f), gravity, 0);
 
-			ballTranslate *= glm::translate(glm::mat4(1.0f), glm::vec3(-glm::clamp(force, 0.1f, 1.0f), 0, 0));
+			ballTranslate *= glm::translate(glm::mat4(1.0f), glm::vec3(-glm::clamp(force, 0.1f, 1.0f), this->direction.y, this->direction.x));
 			ballPos += glm::vec3(-glm::clamp(force, 0.0f, 1.0f), 0, 0);
 		}
     }
 	void updateCamera()
 	{	
-		glm::vec3 tranlateVec = glm::vec3(-glm::clamp(force, 0.1f, 1.0f), gravity, 0);
+		this->direction.y -= gravity;
+		glm::vec3 tranlateVec = glm::vec3(-glm::clamp(force, 0.1f, 1.0f), this->direction.y, this->direction.x);
 		cameraPos += tranlateVec;
 		cameraLook += tranlateVec;
 	}
@@ -301,17 +277,6 @@ public:
 	glm::vec3 getCamPos(){
 		return cameraPos;
 	}
-
-	bool getGravity(){
-		return gravity;
-	}
-    
-    void updateYTranslate()
-    {
-        #define Z_SENSTIVITY 0.02f
-        
-		ballTranslate *= glm::translate(glm::mat4(1.0f), glm::vec3(0, gravity, 0));
-    }
 };
 
 #endif

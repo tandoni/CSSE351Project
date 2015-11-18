@@ -18,16 +18,6 @@ public:
         initialized = false;
     }
     
-    ~RenderEngine()
-    {
-        if(initialized)
-        {
-            // Clean up the buffers
-            //glDeleteBuffers(1, &positionBuffer);
-            //glDeleteBuffers(1, &colorBuffer);
-        }
-    }
-    
     void init(WorldState & state)
     {
         initialized = true;

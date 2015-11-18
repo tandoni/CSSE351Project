@@ -125,7 +125,7 @@ public:
 			}
 
 			if( !indicesMatch ) {
-				fprintf(stderr, "OBJ has non-matching pos/tex/norm indices. Final model may be incorrect.\n");
+				//fprintf(stderr, "OBJ has non-matching pos/tex/norm indices. Final model may be incorrect.\n");
 			}
 
 			for(size_t v=0; v<face->vertex_count; v++)

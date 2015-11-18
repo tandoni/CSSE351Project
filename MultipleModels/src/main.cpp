@@ -3,6 +3,7 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 #define RESOLUTION 512
+#define CENTER 256
 #define TARGET_FPS 30                // controls spin update rate
 #define TIME_BETWEEN_UPDATES 0.015   // seconds between motion updates
 #define PRINT_FPS_INTERVAL 10.0f
@@ -54,7 +55,7 @@ public:
 		printf("OpenGL version %.1f is supported.\n", ver);
 
 		state.init();
-
+		camInit = state.getCamPos();
 		state.currentRes[0] = RESOLUTION;
 		state.currentRes[1] = RESOLUTION;
 		render.init(state);
@@ -71,14 +72,6 @@ public:
 		float lastPrint = lastFrame;
 		float targetFrameTime = 1.0f/(float)TARGET_FPS;
 		
-        
-//        sf::Music music;
-//        
-//        if(music.openFromFile("resources/chains.ogg")) {
-//            music.play();
-//        }
-        
-        
 		while (state.isRunning())
 		{			
 			window->setActive();
@@ -116,7 +109,7 @@ private:
 	glm::ivec2 previousPos;
     glm::vec2 prevPos;
 	bool buttonDown[3];
-	glm::vec3 camInit = state.getCamPos();
+	glm::vec3 camInit;
 
 	void handleEvents(WorldState & state, RenderEngine & render)
 	{
@@ -180,14 +173,7 @@ private:
                 state.cameraLook.z+=0.1;
             }
 
-            if((event.type == sf::Event::TextEntered) && (event.text.unicode == 'g')){
-                state.toggleGravity();
-            }
-
 			if ((event.type == sf::Event::TextEntered) && (event.text.unicode == 'r')){
-				if (state.getGravity() == true){
-					state.toggleGravity();
-				}
 
 				state.setForce(0);
 				state.cameraPos.x = camInit.x;
@@ -203,7 +189,7 @@ private:
 			if(event.type == sf::Event::MouseButtonReleased)
             {
                 state.setForce(glm::distance(prevPos,glm::vec2(event.mouseButton.x,event.mouseButton.y)));
-				state.setDirection(prevPos);
+				state.setDirection(glm::vec2(RESOLUTION / 2, RESOLUTION / 2) - prevPos);
 				state.mouseButtonDown = false;
             }
 
