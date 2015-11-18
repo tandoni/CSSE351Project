@@ -35,6 +35,7 @@
 #include "GLHelper.h"
 #include "RenderEngine.h"
 #include "WorldState.h"
+#include <SFML/Graphics.hpp>
 
 #include <SFML/Audio.hpp>
 
@@ -56,6 +57,7 @@ public:
 
 		state.init();
 		camInit = state.getCamPos();
+
 		state.currentRes[0] = RESOLUTION;
 		state.currentRes[1] = RESOLUTION;
 		render.init(state);
@@ -103,12 +105,15 @@ private:
 	RenderEngine render;
 	WorldState state;
 	
+	sf::Music music;
+	bool cannonFire = music.openFromFile("resources/cannonFire.ogg");
 	sf::Clock timer;
 	float lastUpdate;
 	float motionTime;
 	glm::ivec2 previousPos;
     glm::vec2 prevPos;
 	bool buttonDown[3];
+	glm::vec3 ballCenter;
 	glm::vec3 camInit;
 
 	void handleEvents(WorldState & state, RenderEngine & render)
@@ -174,11 +179,19 @@ private:
             }
 
 			if ((event.type == sf::Event::TextEntered) && (event.text.unicode == 'r')){
+				printf("Reset Pressed\n");
 
+				glm::mat4 ballTranslate = state.getBallTranslateInit();
+				state.ballTranslate = ballTranslate;
+				glm::vec3 camInit = glm::vec3(2.2, .8, 0);
+				glm::vec3 camLookInit = glm::vec3(-1, .5, 0);
+				state.ballPos = state.initballPos;
+				state.targetTranslate = state.initTargetTranslate;
+
+				state.played = false;
 				state.setForce(0);
-				state.cameraPos.x = camInit.x;
-				state.cameraPos.y = camInit.y;
-				state.cameraPos.z = camInit.z;
+				state.cameraPos = camInit;
+				state.cameraLook = camLookInit;
 				prevPos = glm::vec2(0);
 			}
 
@@ -186,8 +199,10 @@ private:
                 prevPos=glm::vec2(event.mouseButton.x,event.mouseButton.y);
 			}
 
-			if(event.type == sf::Event::MouseButtonReleased)
-            {
+			if(event.type == sf::Event::MouseButtonReleased){
+				if (cannonFire){
+					music.play();
+				}
                 state.setForce(glm::distance(prevPos,glm::vec2(event.mouseButton.x,event.mouseButton.y)));
 				state.setDirection(glm::vec2(RESOLUTION / 2, RESOLUTION / 2) - prevPos);
 				state.mouseButtonDown = false;
